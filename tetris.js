@@ -9,13 +9,11 @@ var cumulatedFrameTime = 0;
 var lastFrameTime = Date.now();
 var numberOfLines = 0;
 
-function startGame()
-{
+function startGame() {
     canvas = document.getElementById('tetrisCanvas');
     $('#score').html("Number of lines: "+numberOfLines + " <br /> Difficulty : " + gameStepTime + "ms");
     
-    if (canvas.getContext)
-    { 
+    if (canvas.getContext) { 
         addEvents();
         
         ctx = canvas.getContext('2d');
@@ -23,34 +21,27 @@ function startGame()
         
         addRandomBlock();
 
-        function loop()
-        {
-            if(play == true)
-            {                
+        function loop() {
+            if(play == true) {                
                 var time = Date.now();
                 frameTime = time - lastFrameTime;
                 lastFrameTime = time;
                 cumulatedFrameTime += frameTime; 
             
-                while(cumulatedFrameTime > gameStepTime) 
-                {
-                    if(checkOffset(currentBlock,0,1) == true)
-                    {
+                while(cumulatedFrameTime > gameStepTime) {
+                    if(checkOffset(currentBlock,0,1) == true) {
                         currentBlock.y++;
                     }
-                    else
-                    {
+                    else {
                         writeToArray(currentBlock);
                         addRandomBlock();
                     }
                     
                     checkAndRemoveFullLines();
-                    
                     cumulatedFrameTime -= gameStepTime;
                 }            
             }
-            else
-            {
+            else {
                 lastFrameTime = Date.now();
             }
             ctx.clearRect(0, 0, _canvas_width, _canvas_height);
@@ -59,20 +50,15 @@ function startGame()
         }
         setInterval(loop, 33);       
     }
-    else
-    {
+    else {
         alert('You need Safari or Firefox 1.5+ to play tetris!');
     }
 }
 
-function writeToArray(block)
-{
-    for(var y=0; y<4; y++)
-    {
-        for (var x = 0; x < 4; x++)
-        {
-            if(block.array[y][x] == 1)
-            {
+function writeToArray(block) { 
+    for(var y=0; y<4; y++) {
+        for (var x=0; x<4; x++) {
+            if(block.array[y][x] == 1) {
                 var fieldX = block.x + x;
                 var fieldY = block.y + y;
                 level[fieldY][fieldX] = block.type;                
@@ -81,18 +67,13 @@ function writeToArray(block)
     }
 }
 
-function checkOffset(block, offsetX, offsetY)
-{
-    for(var y=0; y<4; y++)
-    {
-        for(var x = 0; x < 4; x++)
-        {
-            if(block.array[y][x] == 1)
-            {
+function checkOffset(block, offsetX, offsetY) {
+    for(var y=0; y<4; y++) {
+        for(var x=0; x<4; x++) {
+            if(block.array[y][x] == 1) {
                 var fieldX = block.x + x;
                 var fieldY = block.y + y;
-                if(ocupied(fieldX+offsetX, fieldY+offsetY) == true)
-                {
+                if(ocupied(fieldX+offsetX, fieldY+offsetY) == true) {
                     return false;
                 }
             }
@@ -101,33 +82,25 @@ function checkOffset(block, offsetX, offsetY)
     return true;
 }
 
-function ocupied(x, y)
-{
+function ocupied(x, y) {
     if(y>=20)
         return true;
     if(x<0)
         return true;
     if(x>10)
         return true;
-    
-    if(level[y][x] != ' ')
-    {
+    if(level[y][x] != ' ') {
         return true;
     }
-    else
-    {
+    else {
         return false;
     }
 }
 
-function drawBlock(block)
-{
-    for(var y=0; y<4; y++)
-    {
-        for (var x = 0; x < 4; x++)
-        {
-            if(block.array[y][x] == 1)
-            {
+function drawBlock(block) {
+    for(var y=0; y<4; y++) {
+        for (var x=0; x<4; x++) {
+            if(block.array[y][x] == 1) {
                 ctx.fillStyle = block.getOuterColor();
                 ctx.fillRect((block.x+x)*_block_width,(block.y+y)*_block_width,_block_width,_block_width);
                 ctx.fillStyle = block.getInnerColor();
@@ -137,14 +110,10 @@ function drawBlock(block)
     }
 }
 
-function drawArrayBlocks()
-{
-    for(var y=0; y<20; y++)
-    {
-        for(var x=0; x<10; x++)
-        {
-            if (level[y][x] != " ")
-            {
+function drawArrayBlocks() {
+    for(var y=0; y<20; y++) {
+        for(var x=0; x<10; x++) {
+            if (level[y][x] != " ") {
                 ctx.fillStyle = blockEdgecolor;
                 ctx.fillRect(x*_block_width,y*_block_width,_block_width,_block_width);
                 if(level[y][x] == "I")
@@ -167,13 +136,11 @@ function drawArrayBlocks()
     }
 }
 
-function addEvents()
-{
+function addEvents() {
     document.addEventListener('keydown', keydown, false);
 }
 
-function keydown(ev) 
-{
+function keydown(ev) {
     switch(ev.keyCode) 
     {
         case 34: 
@@ -211,8 +178,7 @@ function keydown(ev)
     }
 }
 
-function initializeLevel()
-{
+function initializeLevel() {
     level = new Array();
     for(var y=0; y<20; y++)
     {
@@ -224,8 +190,7 @@ function initializeLevel()
     }
 }
 
-function addRandomBlock()
-{
+function addRandomBlock() {
     var randomnumber = Math.floor(Math.random()*7)
     if(randomnumber == 0)
     currentBlock = new TetrisBlock("O", 3, 0);
@@ -243,22 +208,17 @@ function addRandomBlock()
     currentBlock = new TetrisBlock("T", 3, 0);
 }
 
-function checkAndRemoveFullLines()
-{
-    for(var i=0; i<20; i++)
-    {
+function checkAndRemoveFullLines() {
+    for(var i=0; i<20; i++) {
         var fullLine = true;
         
-        for(var x=0; x<10; x++)
-        {
-            if(level[i][x] == " ")
-            {
+        for(var x=0; x<10; x++) {
+            if(level[i][x] == " ") {
                 fullLine = false;
             }
         }
         
-        if(fullLine == true)
-        {
+        if(fullLine == true) {
             numberOfLines++;
             gameStepTime = gameStepTime * 0.99;
             $('#score').html("Number of lines: "+numberOfLines + " <br />Difficulty : " + parseInt(gameStepTime) + "ms");
@@ -267,12 +227,9 @@ function checkAndRemoveFullLines()
     }
 }
 
-function removeLine(from)
-{
-    for(var i = from; i>0; i--)
-    {
-        for(var x=0; x<10; x++)
-        {
+function removeLine(from) {
+    for(var i = from; i>0; i--) {
+        for(var x=0; x<10; x++) {
             var waardeBovenVakje = level[i-1][x];
             level[i][x] =  waardeBovenVakje;
         }
