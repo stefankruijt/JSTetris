@@ -17,36 +17,11 @@
             <script src="tetrisBlock.js"></script>
             <script src="tetris.js"></script>
             
-            <div id="dialog" title="Choose game mode :)">
-            </div>
-            
             <script>
                 $('#tetrisCanvas').fadeOut(0);
                 $('#tetrisCanvas').fadeIn(1200);
-                $(function() 
-                {
-                    $("#dialog").dialog(
-                    {                        
-                        resizable: true,
-                        modal: false,
-                        buttons: 
-                        {
-                            "Carrie Mode": function() 
-                            {
-                                play = true;
-                                carryMode = true;
-                                $(this).dialog("close");
-                            },
-                            "Normal Mode": function() 
-                            {
-                                play = true;
-                                carryMode = false;
-                                $( this ).dialog("close" );
-                            }
-                        }                    
-                        
-                    });
-                });                            
+                play = true;
+                carryMode = false;                      
             </script>
         </div>
     </body>
