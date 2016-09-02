@@ -1,28 +1,16 @@
-<html>
-    <head>
-        <title>Tetris by Stefan Kruijt</title>
-        <meta charset="UTF-8">
-        <meta name="author" content="Stefan Kruijt">
-        <link rel="stylesheet" href="http://code.jquery.com/ui/1.10.2/themes/smoothness/jquery-ui.css" />
-        <script type="text/javascript" src="http://code.jquery.com/jquery-1.9.1.js"></script>
-        <script type="text/javascript" src="http://code.jquery.com/ui/1.10.2/jquery-ui.js"></script>
-        
-    </head>
-    
-    <body onload="startGame();">
-        <div>            
-            <canvas id="tetrisCanvas" width="200" height="400" style="background-color:#147479"></canvas>
-            <div id="score"></div>
-            <script src="options.js"></script>
-            <script src="tetrisBlock.js"></script>
-            <script src="tetris.js"></script>
-            
-            <script>
-                $('#tetrisCanvas').fadeOut(0);
-                $('#tetrisCanvas').fadeIn(1200);
-                play = true;
-                carryMode = false;                      
-            </script>
-        </div>
-    </body>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Tetris by Stefan Kruijt</title>
+  <meta charset="UTF-8">
+  <meta name="author" content="Stefan Kruijt">
+</head>
+
+<body>
+  <script src="dist/bundle.js"></script>
+<!--<div>
+  <canvas id="tetrisCanvas" width="200" height="400" style="background-color:#147479"></canvas>
+  <div id="score"></div>
+</div>-->
+</body>
 </html>
