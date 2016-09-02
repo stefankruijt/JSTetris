@@ -1,17 +1,18 @@
 export default class Game {
 
-  var ctx;
-  var level;
-  var currentBlock;
-  var play = false;
-  var gameStepTime = 370;
-  var cumulatedFrameTime = 0;
-  var lastFrameTime = Date.now();
-  var numberOfLines = 0;
-
-  constructor() {
+  constructor(ctx) {
     var level = new Array();
     this.initializeLevel(level);
+    this.ctx = ctx;
+
+    var currentBlock;
+    var play = false;
+    var gameStepTime = 370;
+    var cumulatedFrameTime = 0;
+    var lastFrameTime = Date.now();
+    var numberOfLines = 0;
+
+    setInterval(loop, 33);
   }
 
   initializeLevel(level) {
@@ -52,5 +53,4 @@ export default class Game {
     drawArrayBlocks();
     drawBlock(currentBlock);
   }
-  setInterval(loop, 33);
 }

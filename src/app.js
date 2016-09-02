@@ -9,15 +9,6 @@ let blockTypesI = [[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
                    [[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],
                    [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]];
 
-var ctx;
-var level;
-var currentBlock;
-var play = false;
-var gameStepTime = 370;
-var cumulatedFrameTime = 0;
-var lastFrameTime = Date.now();
-var numberOfLines = 0;
-
 function startGame() {
   let game = new Game();
   addEvents();

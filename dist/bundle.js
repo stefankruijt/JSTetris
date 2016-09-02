@@ -54,28 +54,19 @@
 
 	var _tetrisBlock2 = _interopRequireDefault(_tetrisBlock);
 
-	var _canvas = __webpack_require__(5);
+	var _canvas = __webpack_require__(3);
 
 	var _canvas2 = _interopRequireDefault(_canvas);
 
-	var _game = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./modules/game\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var _game = __webpack_require__(4);
 
 	var _game2 = _interopRequireDefault(_game);
 
-	var _utility = __webpack_require__(4);
+	var _utility = __webpack_require__(5);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]]];
-
-	var ctx;
-	var level;
-	var currentBlock;
-	var play = false;
-	var gameStepTime = 370;
-	var cumulatedFrameTime = 0;
-	var lastFrameTime = Date.now();
-	var numberOfLines = 0;
 
 	function startGame() {
 	  var game = new _game2.default();
@@ -552,8 +543,94 @@
 	}*/
 
 /***/ },
-/* 3 */,
+/* 3 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"200\" height=\"400\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
+
+/***/ },
 /* 4 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Game = function () {
+	  function Game(ctx) {
+	    _classCallCheck(this, Game);
+
+	    var level = new Array();
+	    this.initializeLevel(level);
+	    this.ctx = ctx;
+
+	    var currentBlock;
+	    var play = false;
+	    var gameStepTime = 370;
+	    var cumulatedFrameTime = 0;
+	    var lastFrameTime = Date.now();
+	    var numberOfLines = 0;
+
+	    setInterval(loop, 33);
+	  }
+
+	  _createClass(Game, [{
+	    key: "initializeLevel",
+	    value: function initializeLevel(level) {
+	      for (var y = 0; y < 20; y++) {
+	        level[y] = new Array();
+	        for (var x = 0; x < 10; x++) {
+	          level[y][x] = " ";
+	        }
+	      }
+	    }
+	  }, {
+	    key: "loop",
+	    value: function loop() {
+	      if (true) {
+	        var time = Date.now();
+	        frameTime = time - lastFrameTime;
+	        lastFrameTime = time;
+	        cumulatedFrameTime += frameTime;
+
+	        while (cumulatedFrameTime > gameStepTime) {
+	          if (checkOffset(currentBlock, 0, 1) == true) {
+	            currentBlock.y++;
+	          } else {
+	            writeToArray(currentBlock);
+	            addRandomBlock();
+	          }
+
+	          checkAndRemoveFullLines();
+	          cumulatedFrameTime -= gameStepTime;
+	        }
+	      } else {
+	        lastFrameTime = Date.now();
+	      }
+	      ctx.clearRect(0, 0, _canvas_width, _canvas_height);
+	      drawArrayBlocks();
+	      drawBlock(currentBlock);
+	    }
+	  }]);
+
+	  return Game;
+	}();
+
+	exports.default = Game;
+
+/***/ },
+/* 5 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -571,17 +648,6 @@
 
 	exports.generateRandom = generateRandom;
 	exports.sum = sum;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"200\" height=\"400\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
 
 /***/ }
 /******/ ]);
