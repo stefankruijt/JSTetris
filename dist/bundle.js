@@ -46,68 +46,47 @@
 
 	'use strict';
 
-	var _blockType = __webpack_require__(1);
-
-	var _blockType2 = _interopRequireDefault(_blockType);
-
-	var _tetrisBlock = __webpack_require__(2);
-
-	var _tetrisBlock2 = _interopRequireDefault(_tetrisBlock);
-
-	var _canvas = __webpack_require__(3);
+	var _canvas = __webpack_require__(1);
 
 	var _canvas2 = _interopRequireDefault(_canvas);
 
-	var _game = __webpack_require__(4);
+	var _game = __webpack_require__(2);
 
 	var _game2 = _interopRequireDefault(_game);
 
-	var _utility = __webpack_require__(5);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]]];
+	var game;
 
 	function startGame() {
-	  var game = new _game2.default();
-	  addEvents();
-	  ctx = document.getElementById('tetrisCanvas').getContext('2d');
-
-	  var blockOne = new _tetrisBlock2.default(new _blockType2.default('I', blockTypesI, "blue", "black"), 1, 2);
-	  currentBlock = blockOne;
-	  console.log(currentBlock);
-	  blockOne.drawBlock(ctx);
-
-	  console.log(game);
+	  game = new _game2.default(document.getElementById('tetrisCanvas').getContext('2d'));
 	}
 
-	function addEvents() {
-	  document.addEventListener('keydown', keydown, false);
-	}
-
-	function keydown(ev) {
-	  console.log(ev.keyCode);
-	  switch (ev.keyCode) {
+	/*function keydown(ev) {
+	  switch(ev.keyCode) {
 	    case 37:
+	        game.gameEvent("left");
 	      //if (checkOffset(currentBlock, -1, 0)) {
-	      currentBlock.x = 6;
 	      //}
 	      break;
 	    case 39:
 	      //if(checkOffset(currentBlock,+1,0)) {
-	      currentBlock.x++;
+	      game.gameEvent("right");
+	        currentBlock.x++;
+
 	      //}
 	      break;
 	    case 38:
-	      //currentBlock.rotate(level);
+	      game.gameEvent("rotate");
 	      break;
 	    case 40:
 	      //if(checkOffset(currentBlock,0,+1)){
-	      currentBlock.y = currentBlock.y + 1;
+	      game.gameEvent("down");
+	        currentBlock.y = currentBlock.y + 1;
 	      //}
 	      break;
-	  }
-	}
+	    }
+	}*/
 
 	document.body.innerHTML = _canvas2.default;
 	startGame();
@@ -121,53 +100,186 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var BlockType = function () {
-	  function BlockType(blockType, states, innerColor, outerColor) {
-	    _classCallCheck(this, BlockType);
-
-	    this.blockType = blockType;
-	    this.states = states;
-	    this._innerColor = innerColor;
-	    this._outerColor = outerColor;
-
-	    console.log("BlockType " + blockType + " created with inner color of " + this._innerColor + " and outerColor " + this._outerColor);
-	  }
-
-	  _createClass(BlockType, [{
-	    key: "numberOfBlockStates",
-	    value: function numberOfBlockStates() {
-	      return this.states.length;
-	    }
-	  }, {
-	    key: "innerColor",
-	    get: function get() {
-	      return this._innerColor;
-	    },
-	    set: function set(color) {
-	      this._innerColor = color;
-	    }
-	  }, {
-	    key: "outerColor",
-	    get: function get() {
-	      return this._outerColor;
-	    },
-	    set: function set(color) {
-	      this._outerColor = color;
-	    }
-	  }]);
-
-	  return BlockType;
-	}();
-
-	exports.default = BlockType;
+	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"200\" height=\"400\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
 
 /***/ },
 /* 2 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _options = __webpack_require__(3);
+
+	var _options2 = _interopRequireDefault(_options);
+
+	var _tetrisBlock = __webpack_require__(4);
+
+	var _tetrisBlock2 = _interopRequireDefault(_tetrisBlock);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	var Game = function () {
+	  function Game(ctx) {
+	    _classCallCheck(this, Game);
+
+	    var self = this;
+
+	    var level = new Array();
+	    this.level = this.initializeEmptyLevel(level);
+	    this.ctx = ctx;
+	    this.lastFrameTime = Date.now();
+	    this.cumulatedFrameTime = 0;
+	    this.numberOfLines = 0;
+	    this.gameStepTime = _options2.default.frameDuration;
+	    this.currentBlock;
+
+	    this.addRandomBlock();
+
+	    setInterval(function () {
+	      var time = Date.now();
+	      var frameTime = time - self.lastFrameTime;
+	      var currentBlock = self.currentBlock;
+
+	      self.cumulatedFrameTime += frameTime;
+
+	      while (self.cumulatedFrameTime > self.gameStepTime) {
+	        self.lastFrameTime = Date.now();
+
+	        if (self.checkOffset(currentBlock, 0, 1)) {
+	          currentBlock.y = currentBlock.y + 1;
+	        } else {
+	          console.log("write block to array");
+	          //self.writeToArray(self.currentBlock);
+	          self.addRandomBlock();
+	        }
+
+	        //checkAndRemoveFullLines();
+	        self.cumulatedFrameTime -= self.gameStepTime;
+	      }
+
+	      self.ctx.clearRect(0, 0, _options2.default.game_width, _options2.default.game_height);
+	      self.drawArrayBlocks(self.ctx);
+	      currentBlock.drawBlock(self.ctx);
+	    }, 33);
+
+	    document.body.onkeydown = function (e) {
+	      return self.gameEvent(e);
+	    };
+	  }
+
+	  _createClass(Game, [{
+	    key: 'initializeEmptyLevel',
+	    value: function initializeEmptyLevel(level) {
+	      for (var y = 0; y < 20; y++) {
+	        level[y] = new Array();
+	        for (var x = 0; x < 10; x++) {
+	          level[y][x] = " ";
+	        }
+	      }
+	      return level;
+	    }
+	  }, {
+	    key: 'drawArrayBlocks',
+	    value: function drawArrayBlocks() {
+	      for (var y = 0; y < 20; y++) {
+	        for (var x = 0; x < 10; x++) {
+	          if (this.level[y][x] != " ") {
+	            ctx.fillStyle = _options2.default.blockEdgecolor;
+	            ctx.fillRect(x * _block_width, y * _block_width, _block_width, _block_width);
+	            if (level[y][x] == "I") ctx.fillStyle = I_color;else if (level[y][x] == "J") ctx.fillStyle = J_color;else if (level[y][x] == "L") ctx.fillStyle = L_color;else if (level[y][x] == "O") ctx.fillStyle = O_color;else if (level[y][x] == "S") ctx.fillStyle = S_color;else if (level[y][x] == "T") ctx.fillStyle = T_color;else if (level[y][x] == "Z") ctx.fillStyle = Z_color;
+	            ctx.fillRect(x * _block_width + _blockedges, y * _block_width + _blockedges, _block_width - _blockedges * 2, _block_width - _blockedges * 2);
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'addRandomBlock',
+	    value: function addRandomBlock() {
+	      var randomnumber = Math.floor(Math.random() * 7);
+	      if (randomnumber == 0) this.currentBlock = new _tetrisBlock2.default("O", 3, 0);else if (randomnumber == 1) this.currentBlock = new _tetrisBlock2.default("I", 3, 0);else if (randomnumber == 2) this.currentBlock = new _tetrisBlock2.default("Z", 3, 0);else if (randomnumber == 3) this.currentBlock = new _tetrisBlock2.default("L", 3, 0);else if (randomnumber == 4) this.currentBlock = new _tetrisBlock2.default("J", 3, 0);else if (randomnumber == 5) this.currentBlock = new _tetrisBlock2.default("S", 3, 0);else if (randomnumber == 6) this.currentBlock = new _tetrisBlock2.default("T", 3, 0);
+	    }
+	  }, {
+	    key: 'gameEvent',
+	    value: function gameEvent(event) {
+	      switch (event.key) {
+	        case "ArrowLeft":
+	          if (this.checkOffset(this.currentBlock, -1, 0)) {
+	            this.currentBlock.x = this.currentBlock.x - 1;
+	          }
+	          break;
+	        case "ArrowRight":
+	          if (this.checkOffset(this.currentBlock, 1, 0)) {
+	            this.currentBlock.x = this.currentBlock.x + 1;
+	          }
+	          break;
+	        case "ArrowUp":
+	          console.log("rotate");
+	          break;
+	        case "ArrowDown":
+	          if (this.checkOffset(this.currentBlock, 0, 1)) {
+	            this.currentBlock.y = this.currentBlock.y + 1;
+	          }
+	          break;
+	      }
+	    }
+	  }, {
+	    key: 'writeToArray',
+	    value: function writeToArray(block) {
+	      for (var y = 0; y < 4; y++) {
+	        for (var x = 0; x < 4; x++) {
+	          if (block.getActiveState[y][x] == 1) {
+	            var fieldX = block.x + x;
+	            var fieldY = block.y + y;
+	            level[fieldY][fieldX] = block.type;
+	          }
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'checkOffset',
+	    value: function checkOffset(block, offsetX, offsetY) {
+	      for (var y = 0; y < 4; y++) {
+	        for (var x = 0; x < 4; x++) {
+	          if (block.activeState[y][x] == 1) {
+	            var fieldX = block.x + x;
+	            var fieldY = block.y + y;
+	            if (this.ocupied(fieldX + offsetX, fieldY + offsetY)) {
+	              return false;
+	            }
+	          }
+	        }
+	      }
+	      return true;
+	    }
+	  }, {
+	    key: 'ocupied',
+	    value: function ocupied(x, y) {
+	      if (y >= 20) return true;
+	      if (x < 0) return true;
+	      if (x > 10) return true;
+	      if (this.level[y][x] != ' ') {
+	        return true;
+	      } else {
+	        return false;
+	      }
+	    }
+	  }]);
+
+	  return Game;
+	}();
+
+	exports.default = Game;
+
+/***/ },
+/* 3 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -180,26 +292,95 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	var game_width = 200,
+	    game_height = 400,
+	    block_width = 20,
+	    block_edge_width = 1,
+	    block_edge_color = "#000000",
+	    // red
+	fps = 1;
+
+	var Options = function () {
+	  function Options() {
+	    _classCallCheck(this, Options);
+	  }
+
+	  _createClass(Options, null, [{
+	    key: "game_width",
+	    get: function get() {
+	      return game_width;
+	    }
+	  }, {
+	    key: "game_height",
+	    get: function get() {
+	      return game_height;
+	    }
+	  }, {
+	    key: "blockEdgecolor",
+	    get: function get() {
+	      return block_edge_color;
+	    }
+	  }, {
+	    key: "blockEdgeWidth",
+	    get: function get() {
+	      return block_edge_width;
+	    }
+	  }, {
+	    key: "blockWidth",
+	    get: function get() {
+	      return block_width;
+	    }
+	  }, {
+	    key: "frameDuration",
+	    get: function get() {
+	      return 1000 / fps;
+	    }
+	  }]);
+
+	  return Options;
+	}();
+
+	exports.default = Options;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _blockType = __webpack_require__(5);
+
+	var _blockType2 = _interopRequireDefault(_blockType);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
 	var TetrisBlock = function () {
 	  function TetrisBlock(blockType, x, y) {
 	    _classCallCheck(this, TetrisBlock);
 
-	    this.blockType = blockType;
+	    this.blockType = new _blockType2.default(blockType, "red", "black");
 	    this._x = x;
 	    this._y = y;
-	    this.activeState = 0;
+	    this._activeState = 0;
 	    this._block_width = 20;
 	  }
 
 	  _createClass(TetrisBlock, [{
 	    key: "drawBlock",
 	    value: function drawBlock(ctx) {
-	      var activeState = this.blockType.states[this.activeState];
+	      var block = this.blockType.states[this._activeState];
 
-	      for (var y = 0; y < activeState.length; y++) {
-	        for (var x = 0; x < activeState[y].length; x++) {
-	          if (activeState[y][x] == 1) {
-	            console.log(this._x);
+	      for (var y = 0; y < block.length; y++) {
+	        for (var x = 0; x < block[y].length; x++) {
+	          if (block[y][x] == 1) {
 	            ctx.fillStyle = this.blockType.outerColor;
 	            ctx.fillRect((this._x + x) * 20, (this._y + y) * 20, 20, 20);
 	            ctx.fillStyle = this.blockType.innerColor;
@@ -207,6 +388,11 @@
 	          }
 	        }
 	      }
+	    }
+	  }, {
+	    key: "activeState",
+	    get: function get() {
+	      return this.blockType.states[this._activeState];
 	    }
 	  }, {
 	    key: "x",
@@ -228,41 +414,6 @@
 
 	  return TetrisBlock;
 	}();
-
-	exports.default = TetrisBlock;
-
-
-	var I0 = [[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]];
-	var I1 = [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]];
-	var I2 = [[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]];
-	var I3 = [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]];
-
-	var Z0 = [[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-	var Z1 = [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
-	var Z2 = [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]];
-	var Z3 = [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]];
-
-	var O0 = [[0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-
-	var L0 = [[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-	var L1 = [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]];
-	var L2 = [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]];
-	var L3 = [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
-
-	var J0 = [[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-	var J1 = [[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
-	var J2 = [[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]];
-	var J3 = [[0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0]];
-
-	var S0 = [[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-	var S1 = [[0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]];
-	var S2 = [[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]];
-	var S3 = [[1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
-
-	var T0 = [[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
-	var T1 = [[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
-	var T2 = [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
-	var T3 = [[0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]];
 
 	/*
 
@@ -542,19 +693,11 @@
 	}
 	}*/
 
-/***/ },
-/* 3 */
-/***/ function(module, exports) {
 
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	  value: true
-	});
-	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"200\" height=\"400\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
+	exports.default = TetrisBlock;
 
 /***/ },
-/* 4 */
+/* 5 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -567,87 +710,82 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Game = function () {
-	  function Game(ctx) {
-	    _classCallCheck(this, Game);
+	var BlockType = function () {
+	  function BlockType(blockType, innerColor, outerColor) {
+	    _classCallCheck(this, BlockType);
 
-	    var level = new Array();
-	    this.initializeLevel(level);
-	    this.ctx = ctx;
+	    this.blockType = blockType;
+	    this._innerColor = innerColor;
+	    this._outerColor = outerColor;
 
-	    var currentBlock;
-	    var play = false;
-	    var gameStepTime = 370;
-	    var cumulatedFrameTime = 0;
-	    var lastFrameTime = Date.now();
-	    var numberOfLines = 0;
+	    var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]]];
 
-	    setInterval(loop, 33);
+	    var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]]];
+
+	    var blockTypesO = [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]], [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
+	    var blockTypesJ = [[[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0]]];
+
+	    var blockTypesS = [[[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], [[1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
+	    var blockTypesT = [[[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
+	    switch (blockType) {
+	      case "I":
+	        this._states = blockTypesI;
+	        break;
+	      case "Z":
+	        this._states = blockTypesZ;
+	        break;
+	      case "O":
+	        this._states = blockTypesO;
+	        break;
+	      case "J":
+	        this._states = blockTypesJ;
+	        break;
+	      case "S":
+	        this._states = blockTypesS;
+	        break;
+	      case "T":
+	        this._states = blockTypesT;
+	        break;
+	    }
+
+	    console.log("BlockType " + blockType + " created with inner color of " + this._innerColor + " and outerColor " + this._outerColor);
 	  }
 
-	  _createClass(Game, [{
-	    key: "initializeLevel",
-	    value: function initializeLevel(level) {
-	      for (var y = 0; y < 20; y++) {
-	        level[y] = new Array();
-	        for (var x = 0; x < 10; x++) {
-	          level[y][x] = " ";
-	        }
-	      }
+	  _createClass(BlockType, [{
+	    key: "numberOfBlockStates",
+	    value: function numberOfBlockStates() {
+	      return this.states.length;
 	    }
 	  }, {
-	    key: "loop",
-	    value: function loop() {
-	      if (true) {
-	        var time = Date.now();
-	        frameTime = time - lastFrameTime;
-	        lastFrameTime = time;
-	        cumulatedFrameTime += frameTime;
-
-	        while (cumulatedFrameTime > gameStepTime) {
-	          if (checkOffset(currentBlock, 0, 1) == true) {
-	            currentBlock.y++;
-	          } else {
-	            writeToArray(currentBlock);
-	            addRandomBlock();
-	          }
-
-	          checkAndRemoveFullLines();
-	          cumulatedFrameTime -= gameStepTime;
-	        }
-	      } else {
-	        lastFrameTime = Date.now();
-	      }
-	      ctx.clearRect(0, 0, _canvas_width, _canvas_height);
-	      drawArrayBlocks();
-	      drawBlock(currentBlock);
+	    key: "innerColor",
+	    get: function get() {
+	      return this._innerColor;
+	    },
+	    set: function set(color) {
+	      this._innerColor = color;
+	    }
+	  }, {
+	    key: "outerColor",
+	    get: function get() {
+	      return this._outerColor;
+	    },
+	    set: function set(color) {
+	      this._outerColor = color;
+	    }
+	  }, {
+	    key: "states",
+	    get: function get() {
+	      return this._states;
 	    }
 	  }]);
 
-	  return Game;
+	  return BlockType;
 	}();
 
-	exports.default = Game;
-
-/***/ },
-/* 5 */
-/***/ function(module, exports) {
-
-	"use strict";
-
-	Object.defineProperty(exports, "__esModule", {
-	    value: true
-	});
-	function generateRandom() {
-	    return Math.random();
-	}
-
-	function sum(a, b) {
-	    return a + b;
-	}
-
-	exports.generateRandom = generateRandom;
-	exports.sum = sum;
+	exports.default = BlockType;
 
 /***/ }
 /******/ ]);

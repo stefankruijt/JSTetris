@@ -1,19 +1,20 @@
+import BlockType from './blockType';
+
 export default class TetrisBlock {
   constructor(blockType, x, y) {
-    this.blockType = blockType;
+    this.blockType = new BlockType(blockType, "red", "black");
     this._x = x;
     this._y = y;
-    this.activeState=0;
+    this._activeState=0;
     this._block_width = 20;
   }
 
   drawBlock(ctx) {
-    let activeState = this.blockType.states[this.activeState];
+    let block = this.blockType.states[this._activeState];
 
-    for(let y=0; y<activeState.length; y++) {
-      for(let x=0; x<activeState[y].length; x++) {
-        if(activeState[y][x] == 1) {
-          console.log(this._x);
+    for(let y=0; y<block.length; y++) {
+      for(let x=0; x<block[y].length; x++) {
+        if(block[y][x] == 1) {
           ctx.fillStyle = this.blockType.outerColor;
           ctx.fillRect((this._x+x)*20,(this._y+y)*20,20,20);
           ctx.fillStyle =  this.blockType.innerColor;
@@ -21,6 +22,10 @@ export default class TetrisBlock {
         }
       }
     }
+  }
+
+  get activeState() {
+    return this.blockType.states[this._activeState];
   }
 
   set x(newValue) {
@@ -39,38 +44,6 @@ export default class TetrisBlock {
     return this._y;
   }
 }
-
-var I0 = [[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]];
-var I1 = [[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]];
-var I2 = [[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]];
-var I3 = [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]];
-
-var Z0 = [[1,1,0,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]];
-var Z1 = [[0,0,1,0],[0,1,1,0],[0,1,0,0],[0,0,0,0]];
-var Z2 = [[0,0,0,0],[1,1,0,0],[0,1,1,0],[0,0,0,0]];
-var Z3 = [[0,1,0,0],[1,1,0,0],[1,0,0,0],[0,0,0,0]];
-
-var O0 = [[0,1,1,0],[0,1,1,0],[0,0,0,0],[0,0,0,0]];
-
-var L0 = [[0,0,1,0],[1,1,1,0],[0,0,0,0],[0,0,0,0]];
-var L1 = [[0,1,0,0],[0,1,0,0],[0,1,1,0],[0,0,0,0]];
-var L2 = [[0,0,0,0],[1,1,1,0],[1,0,0,0],[0,0,0,0]];
-var L3 = [[1,1,0,0],[0,1,0,0],[0,1,0,0],[0,0,0,0]];
-
-var J0 = [[1,0,0,0],[1,1,1,0],[0,0,0,0],[0,0,0,0]];
-var J1 = [[0,1,1,0],[0,1,0,0],[0,1,0,0],[0,0,0,0]];
-var J2 = [[0,0,0,0],[1,1,1,0],[0,0,1,0],[0,0,0,0]];
-var J3 = [[0,1,0,0],[0,1,0,0],[1,1,0,0],[0,0,0,0]];
-
-var S0 = [[0,1,1,0],[1,1,0,0],[0,0,0,0],[0,0,0,0]];
-var S1 = [[0,1,0,0],[0,1,1,0],[0,0,1,0],[0,0,0,0]];
-var S2 = [[0,0,0,0],[0,1,1,0],[1,1,0,0],[0,0,0,0]];
-var S3 = [[1,0,0,0],[1,1,0,0],[0,1,0,0],[0,0,0,0]];
-
-var T0 = [[0,1,0,0],[1,1,1,0],[0,0,0,0],[0,0,0,0]];
-var T1 = [[0,1,0,0],[0,1,1,0],[0,1,0,0],[0,0,0,0]];
-var T2 = [[0,0,0,0],[1,1,1,0],[0,1,0,0],[0,0,0,0]];
-var T3 = [[0,1,0,0],[1,1,0,0],[0,1,0,0],[0,0,0,0]];
 
 /*
 

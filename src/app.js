@@ -1,54 +1,37 @@
-import BlockType from './modules/blockType';
-import TetrisBlock from './modules/tetrisBlock';
 import canvas from './modules/canvas';
 import Game from './modules/game';
-import { generateRandom, sum } from './modules/utility';
 
-let blockTypesI = [[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
-                   [[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]],
-                   [[0,0,0,0],[0,0,0,0],[1,1,1,1],[0,0,0,0]],
-                   [[0,1,0,0],[0,1,0,0],[0,1,0,0],[0,1,0,0]]];
+var game;
 
 function startGame() {
-  let game = new Game();
-  addEvents();
-  ctx = document.getElementById('tetrisCanvas').getContext('2d');
-
-  let blockOne = new TetrisBlock(new BlockType('I', blockTypesI, "blue", "black"), 1, 2);
-  currentBlock = blockOne;
-  console.log(currentBlock);
-  blockOne.drawBlock(ctx);
-
-  console.log(game);
+  game = new Game(document.getElementById('tetrisCanvas').getContext('2d'));
 }
 
-function addEvents() {
-  document.addEventListener('keydown', keydown, false);
-}
-
-function keydown(ev) {
-  console.log(ev.keyCode)
+/*function keydown(ev) {
   switch(ev.keyCode) {
     case 37:
+        game.gameEvent("left");
       //if (checkOffset(currentBlock, -1, 0)) {
-          currentBlock.x = 6;
       //}
       break;
     case 39:
       //if(checkOffset(currentBlock,+1,0)) {
+      game.gameEvent("right");
         currentBlock.x++;
+
       //}
       break;
     case 38:
-      //currentBlock.rotate(level);
+      game.gameEvent("rotate");
       break;
     case 40:
       //if(checkOffset(currentBlock,0,+1)){
+      game.gameEvent("down");
         currentBlock.y = currentBlock.y + 1;
       //}
       break;
     }
-}
+}*/
 
 document.body.innerHTML = canvas;
 startGame();
