@@ -35,7 +35,7 @@ export default class Game {
           self.addRandomBlock();
         }
 
-        //checkAndRemoveFullLines();
+        self.checkAndRemoveFullLines();
         self.cumulatedFrameTime -= frameDuration;
       }
 
@@ -159,6 +159,27 @@ export default class Game {
     }
     else {
       return false;
+    }
+  }
+
+
+  checkAndRemoveFullLines() {
+    for(var i=0; i<20; i++) {
+      var fullLine = true;
+
+      for(var x=0; x<10; x++) {
+        if(this.level[i][x] == " ") {
+          fullLine = false;
+        }
+      }
+
+      if(fullLine) {
+        console.log("there is a full line!");
+        this.numberOfLines++;
+        //gameStepTime = gameStepTime * 0.99;
+        //$('#score').html("Number of lines: "+numberOfLines + " <br />Difficulty : " + parseInt(gameStepTime) + "ms");
+        //removeLine(i);
+      }
     }
   }
 }

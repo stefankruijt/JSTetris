@@ -3,7 +3,7 @@ import Options from './options';
 
 export default class TetrisBlock {
   constructor(blockType, x, y) {
-    this.blockType = new BlockType(blockType, "red", "black");
+    this.blockType = new BlockType(blockType);
     this._x = x;
     this._y = y;
     this._activeState=0;

@@ -134,7 +134,7 @@
 	          self.addRandomBlock();
 	        }
 
-	        //checkAndRemoveFullLines();
+	        self.checkAndRemoveFullLines();
 	        self.cumulatedFrameTime -= frameDuration;
 	      }
 
@@ -242,6 +242,27 @@
 	        return true;
 	      } else {
 	        return false;
+	      }
+	    }
+	  }, {
+	    key: 'checkAndRemoveFullLines',
+	    value: function checkAndRemoveFullLines() {
+	      for (var i = 0; i < 20; i++) {
+	        var fullLine = true;
+
+	        for (var x = 0; x < 10; x++) {
+	          if (this.level[i][x] == " ") {
+	            fullLine = false;
+	          }
+	        }
+
+	        if (fullLine) {
+	          console.log("there is a full line!");
+	          this.numberOfLines++;
+	          //gameStepTime = gameStepTime * 0.99;
+	          //$('#score').html("Number of lines: "+numberOfLines + " <br />Difficulty : " + parseInt(gameStepTime) + "ms");
+	          //removeLine(i);
+	        }
 	      }
 	    }
 	  }]);
@@ -391,7 +412,7 @@
 	  function TetrisBlock(blockType, x, y) {
 	    _classCallCheck(this, TetrisBlock);
 
-	    this.blockType = new _blockType2.default(blockType, "red", "black");
+	    this.blockType = new _blockType2.default(blockType);
 	    this._x = x;
 	    this._y = y;
 	    this._activeState = 0;
