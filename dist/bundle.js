@@ -195,6 +195,7 @@
 	          break;
 	        case "ArrowUp":
 	          console.log("rotate");
+	          this.currentBlock.rotate();
 	          break;
 	        case "ArrowDown":
 	          if (this.checkOffset(this.currentBlock, 0, 1)) {
@@ -434,6 +435,17 @@
 	          }
 	        }
 	      }
+	    }
+	  }, {
+	    key: 'rotate',
+	    value: function rotate() {
+	      if (this._activeState < this.blockType.numberOfBlockStates() - 1) {
+	        this._activeState = this._activeState + 1;
+	      } else {
+	        this._activeState = 0;
+	      }
+
+	      console.log(this._activeState);
 	    }
 	  }, {
 	    key: 'moveLeft',

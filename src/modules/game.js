@@ -111,6 +111,7 @@ export default class Game {
         break;
       case "ArrowUp":
         console.log("rotate");
+        this.currentBlock.rotate();
         break;
       case "ArrowDown":
         if(this.checkOffset(this.currentBlock,0,1)) {

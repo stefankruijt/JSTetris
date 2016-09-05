@@ -25,6 +25,17 @@ export default class TetrisBlock {
     }
   }
 
+  rotate() {
+    if(this._activeState < this.blockType.numberOfBlockStates()-1) {
+      this._activeState = this._activeState + 1;
+    }
+    else {
+      this._activeState = 0;
+    }
+
+    console.log(this._activeState)
+  }
+
   moveLeft() {
     this._x--;
   }
