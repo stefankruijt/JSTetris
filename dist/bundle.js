@@ -62,32 +62,6 @@
 	  game = new _game2.default(document.getElementById('tetrisCanvas').getContext('2d'));
 	}
 
-	/*function keydown(ev) {
-	  switch(ev.keyCode) {
-	    case 37:
-	        game.gameEvent("left");
-	      //if (checkOffset(currentBlock, -1, 0)) {
-	      //}
-	      break;
-	    case 39:
-	      //if(checkOffset(currentBlock,+1,0)) {
-	      game.gameEvent("right");
-	        currentBlock.x++;
-
-	      //}
-	      break;
-	    case 38:
-	      game.gameEvent("rotate");
-	      break;
-	    case 40:
-	      //if(checkOffset(currentBlock,0,+1)){
-	      game.gameEvent("down");
-	        currentBlock.y = currentBlock.y + 1;
-	      //}
-	      break;
-	    }
-	}*/
-
 	document.body.innerHTML = _canvas2.default;
 	startGame();
 
@@ -138,31 +112,30 @@
 	    this.lastFrameTime = Date.now();
 	    this.cumulatedFrameTime = 0;
 	    this.numberOfLines = 0;
-	    this.gameStepTime = _options2.default.frameDuration;
 	    this.currentBlock;
 
 	    this.addRandomBlock();
 
 	    setInterval(function () {
+	      var frameDuration = _options2.default.frameDuration;
 	      var time = Date.now();
 	      var frameTime = time - self.lastFrameTime;
 	      var currentBlock = self.currentBlock;
 
 	      self.cumulatedFrameTime += frameTime;
 
-	      while (self.cumulatedFrameTime > self.gameStepTime) {
+	      while (self.cumulatedFrameTime > frameDuration) {
 	        self.lastFrameTime = Date.now();
 
 	        if (self.checkOffset(currentBlock, 0, 1)) {
-	          currentBlock.y = currentBlock.y + 1;
+	          currentBlock.moveDown();
 	        } else {
-	          console.log("write block to array");
-	          //self.writeToArray(self.currentBlock);
+	          self.writeToArray(currentBlock);
 	          self.addRandomBlock();
 	        }
 
 	        //checkAndRemoveFullLines();
-	        self.cumulatedFrameTime -= self.gameStepTime;
+	        self.cumulatedFrameTime -= frameDuration;
 	      }
 
 	      self.ctx.clearRect(0, 0, _options2.default.game_width, _options2.default.game_height);
@@ -188,14 +161,14 @@
 	    }
 	  }, {
 	    key: 'drawArrayBlocks',
-	    value: function drawArrayBlocks() {
+	    value: function drawArrayBlocks(ctx) {
 	      for (var y = 0; y < 20; y++) {
 	        for (var x = 0; x < 10; x++) {
 	          if (this.level[y][x] != " ") {
 	            ctx.fillStyle = _options2.default.blockEdgecolor;
-	            ctx.fillRect(x * _block_width, y * _block_width, _block_width, _block_width);
-	            if (level[y][x] == "I") ctx.fillStyle = I_color;else if (level[y][x] == "J") ctx.fillStyle = J_color;else if (level[y][x] == "L") ctx.fillStyle = L_color;else if (level[y][x] == "O") ctx.fillStyle = O_color;else if (level[y][x] == "S") ctx.fillStyle = S_color;else if (level[y][x] == "T") ctx.fillStyle = T_color;else if (level[y][x] == "Z") ctx.fillStyle = Z_color;
-	            ctx.fillRect(x * _block_width + _blockedges, y * _block_width + _blockedges, _block_width - _blockedges * 2, _block_width - _blockedges * 2);
+	            ctx.fillRect(x * _options2.default.blockWidth, y * _options2.default.blockWidth, _options2.default.blockWidth, _options2.default.blockWidth);
+	            if (this.level[y][x] == "I") ctx.fillStyle = _options2.default.blockTypeIColor;else if (this.level[y][x] == "J") ctx.fillStyle = _options2.default.blockTypeJColor;else if (this.level[y][x] == "L") ctx.fillStyle = _options2.default.blockTypeLColor;else if (this.level[y][x] == "O") ctx.fillStyle = _options2.default.blockTypeOColor;else if (this.level[y][x] == "S") ctx.fillStyle = _options2.default.blockTypeSColor;else if (this.level[y][x] == "T") ctx.fillStyle = _options2.default.blockTypeTColor;else if (this.level[y][x] == "Z") ctx.fillStyle = _options2.default.blockTypeZColor;
+	            ctx.fillRect(x * _options2.default.blockWidth + _options2.default.blockEdgeWidth, y * _options2.default.blockWidth + _options2.default.blockEdgeWidth, _options2.default.blockWidth - _options2.default.blockEdgeWidth * 2, _options2.default.blockWidth - _options2.default.blockEdgeWidth * 2);
 	          }
 	        }
 	      }
@@ -212,12 +185,12 @@
 	      switch (event.key) {
 	        case "ArrowLeft":
 	          if (this.checkOffset(this.currentBlock, -1, 0)) {
-	            this.currentBlock.x = this.currentBlock.x - 1;
+	            this.currentBlock.moveLeft();
 	          }
 	          break;
 	        case "ArrowRight":
 	          if (this.checkOffset(this.currentBlock, 1, 0)) {
-	            this.currentBlock.x = this.currentBlock.x + 1;
+	            this.currentBlock.moveRight();
 	          }
 	          break;
 	        case "ArrowUp":
@@ -235,10 +208,10 @@
 	    value: function writeToArray(block) {
 	      for (var y = 0; y < 4; y++) {
 	        for (var x = 0; x < 4; x++) {
-	          if (block.getActiveState[y][x] == 1) {
+	          if (block.activeState[y][x] == 1) {
 	            var fieldX = block.x + x;
 	            var fieldY = block.y + y;
-	            level[fieldY][fieldX] = block.type;
+	            this.level[fieldY][fieldX] = block.blockType.blockType;
 	          }
 	        }
 	      }
@@ -297,8 +270,21 @@
 	    block_width = 20,
 	    block_edge_width = 1,
 	    block_edge_color = "#000000",
+	    // black
+	fps = 1,
+	    blockTypeZColor = "#FF0000",
 	    // red
-	fps = 1;
+	blockTypeIColor = "#00FFFF",
+	    // cyan
+	blockTypeLColor = "#ffa500",
+	    // orange
+	blockTypeOColor = "#FFFF00",
+	    // yellow
+	blockTypeJColor = "#0000FF",
+	    // blue
+	blockTypeSColor = "#008000",
+	    // green
+	blockTypeTColor = "#800080"; // purple
 
 	var Options = function () {
 	  function Options() {
@@ -335,6 +321,41 @@
 	    get: function get() {
 	      return 1000 / fps;
 	    }
+	  }, {
+	    key: "blockTypeZColor",
+	    get: function get() {
+	      return blockTypeZColor;
+	    }
+	  }, {
+	    key: "blockTypeIColor",
+	    get: function get() {
+	      return blockTypeIColor;
+	    }
+	  }, {
+	    key: "blockTypeLColor",
+	    get: function get() {
+	      return blockTypeZColor;
+	    }
+	  }, {
+	    key: "blockTypeOColor",
+	    get: function get() {
+	      return blockTypeOColor;
+	    }
+	  }, {
+	    key: "blockTypeJColor",
+	    get: function get() {
+	      return blockTypeJColor;
+	    }
+	  }, {
+	    key: "blockTypeSColor",
+	    get: function get() {
+	      return blockTypeSColor;
+	    }
+	  }, {
+	    key: "blockTypeTColor",
+	    get: function get() {
+	      return blockTypeTColor;
+	    }
 	  }]);
 
 	  return Options;
@@ -346,7 +367,7 @@
 /* 4 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
@@ -357,6 +378,10 @@
 	var _blockType = __webpack_require__(5);
 
 	var _blockType2 = _interopRequireDefault(_blockType);
+
+	var _options = __webpack_require__(3);
+
+	var _options2 = _interopRequireDefault(_options);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -374,7 +399,7 @@
 	  }
 
 	  _createClass(TetrisBlock, [{
-	    key: "drawBlock",
+	    key: 'drawBlock',
 	    value: function drawBlock(ctx) {
 	      var block = this.blockType.states[this._activeState];
 
@@ -390,12 +415,27 @@
 	      }
 	    }
 	  }, {
-	    key: "activeState",
+	    key: 'moveLeft',
+	    value: function moveLeft() {
+	      this._x--;
+	    }
+	  }, {
+	    key: 'moveRight',
+	    value: function moveRight() {
+	      this._x++;
+	    }
+	  }, {
+	    key: 'moveDown',
+	    value: function moveDown() {
+	      this._y++;
+	    }
+	  }, {
+	    key: 'activeState',
 	    get: function get() {
 	      return this.blockType.states[this._activeState];
 	    }
 	  }, {
-	    key: "x",
+	    key: 'x',
 	    set: function set(newValue) {
 	      this._x = newValue;
 	    },
@@ -403,7 +443,7 @@
 	      return this._x;
 	    }
 	  }, {
-	    key: "y",
+	    key: 'y',
 	    set: function set(newValue) {
 	      this._y = newValue;
 	    },
@@ -698,7 +738,7 @@
 
 /***/ },
 /* 5 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 
@@ -708,21 +748,28 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _options = __webpack_require__(3);
+
+	var _options2 = _interopRequireDefault(_options);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var BlockType = function () {
-	  function BlockType(blockType, innerColor, outerColor) {
+	  function BlockType(blockType) {
 	    _classCallCheck(this, BlockType);
 
 	    this.blockType = blockType;
-	    this._innerColor = innerColor;
-	    this._outerColor = outerColor;
+	    this._outerColor = _options2.default.blockEdgecolor;
 
 	    var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]]];
 
 	    var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]]];
 
-	    var blockTypesO = [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]], [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+	    var blockTypesL = [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]], [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
+	    var blockTypesO = [[[0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
 
 	    var blockTypesJ = [[[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0]]];
 
@@ -732,21 +779,31 @@
 
 	    switch (blockType) {
 	      case "I":
+	        this._innerColor = _options2.default.blockTypeIColor;
 	        this._states = blockTypesI;
 	        break;
 	      case "Z":
+	        this._innerColor = _options2.default.blockTypeZColor;
 	        this._states = blockTypesZ;
 	        break;
 	      case "O":
+	        this._innerColor = _options2.default.blockTypeOColor;
 	        this._states = blockTypesO;
 	        break;
+	      case "L":
+	        this._innerColor = _options2.default.blockTypeLColor;
+	        this._states = blockTypesL;
+	        break;
 	      case "J":
+	        this._innerColor = _options2.default.blockTypeJColor;
 	        this._states = blockTypesJ;
 	        break;
 	      case "S":
+	        this._innerColor = _options2.default.blockTypeSColor;
 	        this._states = blockTypesS;
 	        break;
 	      case "T":
+	        this._innerColor = _options2.default.blockTypeTColor;
 	        this._states = blockTypesT;
 	        break;
 	    }

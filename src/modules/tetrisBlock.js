@@ -1,4 +1,5 @@
 import BlockType from './blockType';
+import Options from './options';
 
 export default class TetrisBlock {
   constructor(blockType, x, y) {
@@ -22,6 +23,18 @@ export default class TetrisBlock {
         }
       }
     }
+  }
+
+  moveLeft() {
+    this._x--;
+  }
+
+  moveRight() {
+    this._x++;
+  }
+
+  moveDown() {
+    this._y++;
   }
 
   get activeState() {

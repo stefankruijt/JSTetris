@@ -2,8 +2,16 @@ const game_width        = 200,
       game_height       = 400,
       block_width       = 20,
       block_edge_width  = 1,
-      block_edge_color  = "#000000", // red
-      fps               = 1;
+      block_edge_color  = "#000000", // black
+      fps               = 1,
+
+      blockTypeZColor = "#FF0000", // red
+      blockTypeIColor = "#00FFFF", // cyan
+      blockTypeLColor = "#ffa500", // orange
+      blockTypeOColor = "#FFFF00", // yellow
+      blockTypeJColor = "#0000FF", // blue
+      blockTypeSColor = "#008000", // green
+      blockTypeTColor = "#800080"; // purple
 
 export default class Options {
 
@@ -29,5 +37,27 @@ export default class Options {
 
   static get frameDuration() {
     return 1000/fps;
+  }
+
+  static get blockTypeZColor() {
+    return blockTypeZColor;
+  }
+  static get blockTypeIColor() {
+    return blockTypeIColor;
+  }
+  static get blockTypeLColor() {
+    return blockTypeZColor;
+  }
+  static get blockTypeOColor() {
+    return blockTypeOColor;
+  }
+  static get blockTypeJColor() {
+    return blockTypeJColor;
+  }
+  static get blockTypeSColor() {
+    return blockTypeSColor;
+  }
+  static get blockTypeTColor() {
+    return blockTypeTColor;
   }
 }

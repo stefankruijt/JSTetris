@@ -12,32 +12,31 @@ export default class Game {
     this.lastFrameTime = Date.now();
     this.cumulatedFrameTime = 0;
     this.numberOfLines = 0;
-    this.gameStepTime = Options.frameDuration;
     this.currentBlock;
 
     this.addRandomBlock();
 
     setInterval(function() {
+      let frameDuration = Options.frameDuration;
       var time = Date.now();
       var frameTime = time - self.lastFrameTime;
       let currentBlock = self.currentBlock;
 
       self.cumulatedFrameTime += frameTime;
 
-      while(self.cumulatedFrameTime > self.gameStepTime) {
+      while(self.cumulatedFrameTime > frameDuration) {
         self.lastFrameTime = Date.now();
 
         if(self.checkOffset(currentBlock,0,1)) {
-          currentBlock.y = currentBlock.y + 1;
+          currentBlock.moveDown();
         }
         else {
-          console.log("write block to array");
-          //self.writeToArray(self.currentBlock);
+          self.writeToArray(currentBlock);
           self.addRandomBlock();
         }
 
         //checkAndRemoveFullLines();
-        self.cumulatedFrameTime -= self.gameStepTime;
+        self.cumulatedFrameTime -= frameDuration;
       }
 
       self.ctx.clearRect(0, 0, Options.game_width, Options.game_height);
@@ -58,27 +57,30 @@ export default class Game {
     return level;
   }
 
-  drawArrayBlocks() {
+  drawArrayBlocks(ctx) {
     for(var y=0; y<20; y++) {
       for(var x=0; x<10; x++) {
         if (this.level[y][x] != " ") {
           ctx.fillStyle = Options.blockEdgecolor;
-          ctx.fillRect(x*_block_width,y*_block_width,_block_width,_block_width);
-          if(level[y][x] == "I")
-            ctx.fillStyle = I_color;
-          else if(level[y][x] == "J")
-            ctx.fillStyle = J_color
-          else if(level[y][x] == "L")
-            ctx.fillStyle = L_color
-          else if(level[y][x] == "O")
-            ctx.fillStyle = O_color
-          else if(level[y][x] == "S")
-            ctx.fillStyle = S_color
-          else if(level[y][x] == "T")
-            ctx.fillStyle = T_color
-          else if(level[y][x] == "Z")
-            ctx.fillStyle = Z_color;
-          ctx.fillRect(x*_block_width+_blockedges,y*_block_width+_blockedges,_block_width-_blockedges*2,_block_width-_blockedges*2);
+          ctx.fillRect(x*Options.blockWidth, y*Options.blockWidth, Options.blockWidth, Options.blockWidth);
+          if(this.level[y][x] == "I")
+            ctx.fillStyle = Options.blockTypeIColor;
+          else if(this.level[y][x] == "J")
+            ctx.fillStyle = Options.blockTypeJColor;
+          else if(this.level[y][x] == "L")
+            ctx.fillStyle = Options.blockTypeLColor;
+          else if(this.level[y][x] == "O")
+            ctx.fillStyle = Options.blockTypeOColor;
+          else if(this.level[y][x] == "S")
+            ctx.fillStyle = Options.blockTypeSColor;
+          else if(this.level[y][x] == "T")
+            ctx.fillStyle = Options.blockTypeTColor;
+          else if(this.level[y][x] == "Z")
+            ctx.fillStyle = Options.blockTypeZColor;
+          ctx.fillRect(x*Options.blockWidth + Options.blockEdgeWidth,
+                       y*Options.blockWidth + Options.blockEdgeWidth,
+                       Options.blockWidth-Options.blockEdgeWidth*2,
+                       Options.blockWidth-Options.blockEdgeWidth*2);
         }
       }
     }
@@ -98,13 +100,13 @@ export default class Game {
   gameEvent(event) {
     switch(event.key) {
       case "ArrowLeft":
-      if(this.checkOffset(this.currentBlock,-1,0)) {
-        this.currentBlock.x = this.currentBlock.x - 1;
-      }
+        if(this.checkOffset(this.currentBlock,-1,0)) {
+          this.currentBlock.moveLeft();
+        }
         break;
       case "ArrowRight":
         if(this.checkOffset(this.currentBlock,1,0)) {
-          this.currentBlock.x = this.currentBlock.x + 1;
+          this.currentBlock.moveRight();
         }
         break;
       case "ArrowUp":
@@ -121,10 +123,10 @@ export default class Game {
   writeToArray(block) {
     for(var y=0; y<4; y++) {
       for (var x=0; x<4; x++) {
-        if(block.getActiveState[y][x] == 1) {
+        if(block.activeState[y][x] == 1) {
           var fieldX = block.x + x;
           var fieldY = block.y + y;
-          level[fieldY][fieldX] = block.type;
+          this.level[fieldY][fieldX] = block.blockType.blockType;
         }
       }
     }
