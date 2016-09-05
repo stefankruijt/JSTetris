@@ -74,7 +74,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"200\" height=\"400\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
+	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"250\" height=\"500\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
 
 /***/ },
 /* 2 */
@@ -287,9 +287,9 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var game_width = 200,
-	    game_height = 400,
-	    block_width = 20,
+	var game_width = 250,
+	    game_height = 500,
+	    block_width = game_width / 10,
 	    block_edge_width = 1,
 	    block_edge_color = "#000000",
 	    // black
@@ -429,9 +429,9 @@
 	        for (var x = 0; x < block[y].length; x++) {
 	          if (block[y][x] == 1) {
 	            ctx.fillStyle = this.blockType.outerColor;
-	            ctx.fillRect((this._x + x) * 20, (this._y + y) * 20, 20, 20);
+	            ctx.fillRect((this._x + x) * _options2.default.blockWidth, (this._y + y) * _options2.default.blockWidth, _options2.default.blockWidth, _options2.default.blockWidth);
 	            ctx.fillStyle = this.blockType.innerColor;
-	            ctx.fillRect((this._x + x) * 20 + 1, (this._y + y) * 20 + 1, 20 - 1 * 2, 20 - 1 * 2);
+	            ctx.fillRect((this._x + x) * _options2.default.blockWidth + 1, (this._y + y) * _options2.default.blockWidth + 1, _options2.default.blockWidth - 1 * 2, _options2.default.blockWidth - 1 * 2);
 	          }
 	        }
 	      }

@@ -17,9 +17,9 @@ export default class TetrisBlock {
       for(let x=0; x<block[y].length; x++) {
         if(block[y][x] == 1) {
           ctx.fillStyle = this.blockType.outerColor;
-          ctx.fillRect((this._x+x)*20,(this._y+y)*20,20,20);
+          ctx.fillRect((this._x+x)*Options.blockWidth,(this._y+y)*Options.blockWidth,Options.blockWidth,Options.blockWidth);
           ctx.fillStyle =  this.blockType.innerColor;
-          ctx.fillRect((this._x+x)*20+1,(this._y+y)*20+1,20-1*2,20-1*2);
+          ctx.fillRect((this._x+x)*Options.blockWidth+1,(this._y+y)*Options.blockWidth+1,Options.blockWidth-1*2,Options.blockWidth-1*2);
         }
       }
     }

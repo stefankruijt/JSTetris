@@ -1,6 +1,6 @@
-const game_width        = 200,
-      game_height       = 400,
-      block_width       = 20,
+const game_width        = 250,
+      game_height       = 500,
+      block_width       = game_width/10,
       block_edge_width  = 1,
       block_edge_color  = "#000000", // black
       fps               = 1,
