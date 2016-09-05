@@ -262,7 +262,17 @@
 	          this.numberOfLines++;
 	          //gameStepTime = gameStepTime * 0.99;
 	          //$('#score').html("Number of lines: "+numberOfLines + " <br />Difficulty : " + parseInt(gameStepTime) + "ms");
-	          //removeLine(i);
+	          this.removeLine(i);
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'removeLine',
+	    value: function removeLine(number) {
+	      for (var i = number; i > 0; i--) {
+	        for (var x = 0; x < 10; x++) {
+	          var valueAboveField = this.level[i - 1][x];
+	          this.level[i][x] = valueAboveField;
 	        }
 	      }
 	    }
