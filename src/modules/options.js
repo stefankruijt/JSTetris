@@ -1,63 +1,63 @@
-const game_width        = 250,
-      game_height       = 500,
-      block_width       = game_width/10,
-      block_edge_width  = 1,
-      block_edge_color  = "#000000", // black
-      fps               = 1,
+const GAME_WIDTH        = 250,
+      GAME_HEIGHT       = 500,
+      BLOCK_WIDTH       = GAME_WIDTH/10,
+      BLOCK_EDGE_WIDTH  = 1,
+      BLOCK_EDGE_COLOR  = "#000000", // black
+      FPS               = 1,
 
-      blockTypeZColor = "#FF0000", // red
-      blockTypeIColor = "#00FFFF", // cyan
-      blockTypeLColor = "#ffa500", // orange
-      blockTypeOColor = "#FFFF00", // yellow
-      blockTypeJColor = "#0000FF", // blue
-      blockTypeSColor = "#008000", // green
-      blockTypeTColor = "#800080"; // purple
+      BLOCKTYPE_Z_COLOR = "#FF0000", // red
+      BLOCKTYPE_I_COLOR = "#00FFFF", // cyan
+      BLOCKTYPE_L_COLOR = "#ffa500", // orange
+      BLOCKTYPE_O_COLOR = "#FFFF00", // yellow
+      BLOCKTYPE_J_COLOR = "#0000FF", // blue
+      BLOCKTYPE_S_COLOR = "#008000", // green
+      BLOCKTYPE_T_COLOR = "#800080"; // purple
 
 export default class Options {
 
   static get game_width() {
-    return game_width;
+    return GAME_WIDTH;
   }
 
   static get game_height() {
-    return game_height;
-  }
-
-  static get blockEdgecolor() {
-    return block_edge_color;
+    return GAME_HEIGHT;
   }
 
   static get blockEdgeWidth() {
-    return block_edge_width;
+    return BLOCK_EDGE_WIDTH;
+  }
+
+  static get blockEdgecolor() {
+    return BLOCK_EDGE_COLOR;
   }
 
   static get blockWidth() {
-    return block_width;
+    return BLOCK_WIDTH;
   }
 
   static get frameDuration() {
-    return 1000/fps;
+    return 1000/FPS;
   }
 
   static get blockTypeZColor() {
-    return blockTypeZColor;
+    return BLOCKTYPE_Z_COLOR;
   }
   static get blockTypeIColor() {
-    return blockTypeIColor;
+    return BLOCKTYPE_I_COLOR;
   }
   static get blockTypeLColor() {
-    return blockTypeZColor;
+    return BLOCKTYPE_L_COLOR;
   }
   static get blockTypeOColor() {
-    return blockTypeOColor;
+    return BLOCKTYPE_O_COLOR;
   }
   static get blockTypeJColor() {
-    return blockTypeJColor;
+    return BLOCKTYPE_J_COLOR;
   }
   static get blockTypeSColor() {
-    return blockTypeSColor;
+    return BLOCKTYPE_S_COLOR;
   }
   static get blockTypeTColor() {
-    return blockTypeTColor;
+    return BLOCKTYPE_T_COLOR;
   }
 }
