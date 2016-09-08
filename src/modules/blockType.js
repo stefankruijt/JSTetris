@@ -1,8 +1,8 @@
 import Options from './options';
 
 export default class BlockType {
-  constructor(blockType) {
-    this.blockType = blockType;
+  constructor(blockLetter) {
+    this._blockLetter = blockLetter;
     this._outerColor = Options.blockEdgecolor;
 
     let blockTypesI = [[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
@@ -38,7 +38,7 @@ export default class BlockType {
                         [[0,0,0,0],[1,1,1,0],[0,1,0,0],[0,0,0,0]],
                         [[0,1,0,0],[1,1,0,0],[0,1,0,0],[0,0,0,0]]];
 
-    switch(blockType) {
+    switch(blockLetter) {
       case "I":
         this._innerColor = Options.blockTypeIColor;
         this._states = blockTypesI;
@@ -69,11 +69,19 @@ export default class BlockType {
         break;
     }
 
-    console.log(`BlockType ${blockType} created with inner color of ${this._innerColor} and outerColor ${this._outerColor}`);
+    console.log(`BlockType ${this._blockLetter} created with inner color of ${this._innerColor} and outerColor ${this._outerColor}`);
   }
 
   numberOfBlockStates() {
     return this.states.length;
+  }
+
+  get blockLetter() {
+    return this._blockLetter;
+  }
+
+  set blockLetter(letter) {
+    return this._blockLetter = letter;
   }
 
   get innerColor() {

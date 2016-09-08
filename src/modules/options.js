@@ -3,7 +3,7 @@ const GAME_WIDTH        = 250,
       BLOCK_WIDTH       = GAME_WIDTH/10,
       BLOCK_EDGE_WIDTH  = 1,
       BLOCK_EDGE_COLOR  = "#000000", // black
-      FPS               = 1,
+      FPS               = 10,
 
       BLOCKTYPE_Z_COLOR = "#FF0000", // red
       BLOCKTYPE_I_COLOR = "#00FFFF", // cyan

@@ -32,8 +32,6 @@ export default class TetrisBlock {
     else {
       this._activeState = 0;
     }
-
-    console.log(this._activeState)
   }
 
   moveLeft() {
@@ -66,6 +64,14 @@ export default class TetrisBlock {
 
   get y() {
     return this._y;
+  }
+
+  get blockType() {
+    return this._blockType;
+  }
+
+  set blockType(newBlockType) {
+    this._blockType = newBlockType;
   }
 }
 
