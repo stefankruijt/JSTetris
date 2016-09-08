@@ -56,10 +56,8 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var game;
-
 	function startGame() {
-	  game = new _game2.default(document.getElementById('tetrisCanvas').getContext('2d'));
+	  new _game2.default(document.getElementById('tetrisCanvas').getContext('2d'));
 	}
 
 	document.body.innerHTML = _canvas2.default;
