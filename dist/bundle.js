@@ -57,10 +57,11 @@
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function startGame() {
-	  new _game2.default(document.getElementById('tetrisCanvas').getContext('2d'));
+	  new _game2.default(document.getElementById('tetrisCanvas'));
 	}
 
 	document.body.innerHTML = _canvas2.default;
+
 	startGame();
 
 /***/ },
@@ -103,80 +104,84 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var Game = function () {
-	  function Game(ctx) {
+	  function Game(canvas) {
 	    _classCallCheck(this, Game);
 
-	    this.ctx = ctx;
+	    this.ctx = canvas.getContext("2d");
+	    this.blockWidth = canvas.width / 10;
+	    this.numberOfLines = 0;
 	    var self = this;
 
-	    this.gameField = new _gameField2.default();
-	    var level = new Array();
-
-	    this.lastFrameTime = Date.now();
-	    this.cumulatedFrameTime = 0;
-	    this.numberOfLines = 0;
+	    this.gameField = new _gameField2.default(canvas);
 	    this.currentBlock = self.getNewRandomTetrisBlock();
-
-	    setInterval(function () {
-	      var frameDuration = _options2.default.frameDuration;
-	      var time = Date.now();
-	      var frameTime = time - self.lastFrameTime;
-	      var currentBlock = self.currentBlock;
-
-	      self.cumulatedFrameTime += frameTime;
-
-	      while (self.cumulatedFrameTime > frameDuration) {
-	        self.lastFrameTime = Date.now();
-
-	        if (self.movementAllowed(currentBlock, 0, 1)) {
-	          currentBlock.moveDown();
-	        } else {
-	          self.gameField.addBlockToField(currentBlock);
-	          self.currentBlock = self.getNewRandomTetrisBlock();
-	        }
-
-	        if (self.gameField.hasFullLines(level)) {
-	          this.shiftAllLinesDownFromLineNumber(i);
-	          this.numberOfLines++;
-	        }
-	        self.cumulatedFrameTime -= frameDuration;
-	      }
-
-	      self.ctx.clearRect(0, 0, _options2.default.game_width, _options2.default.game_height);
-	      self.gameField.drawGameField(self.ctx);
-	      currentBlock.drawBlock(self.ctx);
-	    }, _options2.default.frameDuration);
 
 	    document.body.onkeydown = function (e) {
 	      return self.gameEvent(e);
 	    };
+
+	    requestAnimationFrame(mainLoop);
+	    var lastFrameTimeMs = 0;
+	    var maxFPS = 60;
+
+	    function mainLoop(timestamp) {
+	      if (timestamp < lastFrameTimeMs + 200) {
+	        draw();
+	        requestAnimationFrame(mainLoop);
+	        return;
+	      }
+
+	      update();
+	      draw();
+	      lastFrameTimeMs = timestamp;
+
+	      requestAnimationFrame(mainLoop);
+	    }
+
+	    function update() {
+	      if (self.movementAllowed(self.currentBlock, self.currentBlock.activeState, 0, 1)) {
+	        self.currentBlock.moveDown();
+	      } else {
+	        self.gameField.addBlockToField(self.currentBlock);
+	        self.currentBlock = self.getNewRandomTetrisBlock();
+	      }
+
+	      self.gameField.checkAndRemoveFullLines();
+	    }
+
+	    function draw() {
+	      self.ctx.clearRect(0, 0, canvas.width, canvas.height);
+	      self.gameField.drawGameField(self.ctx);
+	      self.currentBlock.drawBlock(self.ctx);
+	    }
 	  }
 
 	  _createClass(Game, [{
 	    key: 'getNewRandomTetrisBlock',
 	    value: function getNewRandomTetrisBlock() {
 	      var random = Math.floor(Math.random() * 7);
-	      if (random == 0) return new _tetrisBlock2.default("O", 3, 0);else if (random == 1) return new _tetrisBlock2.default("I", 3, 0);else if (random == 2) return new _tetrisBlock2.default("Z", 3, 0);else if (random == 3) return new _tetrisBlock2.default("L", 3, 0);else if (random == 4) return new _tetrisBlock2.default("J", 3, 0);else if (random == 5) return new _tetrisBlock2.default("S", 3, 0);else if (random == 6) return new _tetrisBlock2.default("T", 3, 0);
+	      if (random == 0) return new _tetrisBlock2.default("O", 3, 0, this.blockWidth);else if (random == 1) return new _tetrisBlock2.default("I", 3, 0, this.blockWidth);else if (random == 2) return new _tetrisBlock2.default("Z", 3, 0, this.blockWidth);else if (random == 3) return new _tetrisBlock2.default("L", 3, 0, this.blockWidth);else if (random == 4) return new _tetrisBlock2.default("J", 3, 0, this.blockWidth);else if (random == 5) return new _tetrisBlock2.default("S", 3, 0, this.blockWidth);else if (random == 6) return new _tetrisBlock2.default("T", 3, 0, this.blockWidth);
 	    }
 	  }, {
 	    key: 'gameEvent',
 	    value: function gameEvent(event) {
 	      switch (event.key) {
 	        case "ArrowLeft":
-	          if (this.movementAllowed(this.currentBlock, -1, 0)) {
+	          if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, -1, 0)) {
 	            this.currentBlock.moveLeft();
 	          }
 	          break;
 	        case "ArrowRight":
-	          if (this.movementAllowed(this.currentBlock, 1, 0)) {
+	          if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 1, 0)) {
 	            this.currentBlock.moveRight();
 	          }
 	          break;
 	        case "ArrowUp":
-	          this.currentBlock.rotate();
+	          if (this.movementAllowed(this.currentBlock, this.currentBlock.nextState(), 1, 0)) {
+	            this.currentBlock.rotate();
+	          }
 	          break;
 	        case "ArrowDown":
-	          if (this.movementAllowed(this.currentBlock, 0, 1)) {
+	          if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 0, 1)) {
 	            this.currentBlock.y = this.currentBlock.y + 1;
 	          }
 	          break;
@@ -184,13 +189,13 @@
 	    }
 	  }, {
 	    key: 'movementAllowed',
-	    value: function movementAllowed(block, xMovement, yMovement) {
+	    value: function movementAllowed(block, state, xMovement, yMovement) {
 	      var x = block.x + xMovement;
 	      var y = block.y + yMovement;
 
-	      for (var i = 0; i < block.activeState.length; i++) {
-	        for (var j = 0; j < block.activeState[i].length; j++) {
-	          if (block.activeState[i][j] == 1) {
+	      for (var i = 0; i < state.length; i++) {
+	        for (var j = 0; j < state[i].length; j++) {
+	          if (state[i][j] == 1) {
 	            var fieldY = y + i;
 	            var fieldX = x + j;
 
@@ -223,13 +228,11 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var GAME_WIDTH = 250,
-	    GAME_HEIGHT = 500,
-	    BLOCK_WIDTH = GAME_WIDTH / 10,
-	    BLOCK_EDGE_WIDTH = 1,
+	var BLOCK_EDGE_WIDTH = 1,
 	    BLOCK_EDGE_COLOR = "#000000",
 	    // black
-	FPS = 10,
+	GAME_SPEED = 50,
+	    FPS = 60,
 	    BLOCKTYPE_Z_COLOR = "#FF0000",
 	    // red
 	BLOCKTYPE_I_COLOR = "#00FFFF",
@@ -242,7 +245,10 @@
 	    // blue
 	BLOCKTYPE_S_COLOR = "#008000",
 	    // green
-	BLOCKTYPE_T_COLOR = "#800080"; // purple
+	BLOCKTYPE_T_COLOR = "#800080",
+	    // purple
+
+	DEBUG = false;
 
 	var Options = function () {
 	  function Options() {
@@ -250,16 +256,6 @@
 	  }
 
 	  _createClass(Options, null, [{
-	    key: "game_width",
-	    get: function get() {
-	      return GAME_WIDTH;
-	    }
-	  }, {
-	    key: "game_height",
-	    get: function get() {
-	      return GAME_HEIGHT;
-	    }
-	  }, {
 	    key: "blockEdgeWidth",
 	    get: function get() {
 	      return BLOCK_EDGE_WIDTH;
@@ -270,9 +266,9 @@
 	      return BLOCK_EDGE_COLOR;
 	    }
 	  }, {
-	    key: "blockWidth",
+	    key: "gameSpeed",
 	    get: function get() {
-	      return BLOCK_WIDTH;
+	      return GAME_SPEED;
 	    }
 	  }, {
 	    key: "frameDuration",
@@ -345,10 +341,11 @@
 	var FIELD_HEIGHT_IN_BLOCKS = 20;
 
 	var GameField = function () {
-	  function GameField() {
+	  function GameField(canvas) {
 	    _classCallCheck(this, GameField);
 
 	    this.gameField = this.initializeEmptyGameField();
+	    this.block_width = canvas.width / FIELD_WIDTH_IN_BLOCKS;
 	  }
 
 	  _createClass(GameField, [{
@@ -410,33 +407,39 @@
 	        for (var x = 0; x < 10; x++) {
 	          if (this.gameField[y][x] != " ") {
 	            ctx.fillStyle = _options2.default.blockEdgecolor;
-	            ctx.fillRect(x * _options2.default.blockWidth, y * _options2.default.blockWidth, _options2.default.blockWidth, _options2.default.blockWidth);
+	            ctx.fillRect(x * this.block_width, y * this.block_width, this.block_width, this.block_width);
 
 	            if (this.gameField[y][x] == "I") ctx.fillStyle = _options2.default.blockTypeIColor;else if (this.gameField[y][x] == "J") ctx.fillStyle = _options2.default.blockTypeJColor;else if (this.gameField[y][x] == "L") ctx.fillStyle = _options2.default.blockTypeLColor;else if (this.gameField[y][x] == "O") ctx.fillStyle = _options2.default.blockTypeOColor;else if (this.gameField[y][x] == "S") ctx.fillStyle = _options2.default.blockTypeSColor;else if (this.gameField[y][x] == "T") ctx.fillStyle = _options2.default.blockTypeTColor;else if (this.gameField[y][x] == "Z") ctx.fillStyle = _options2.default.blockTypeZColor;
-	            ctx.fillRect(x * _options2.default.blockWidth + _options2.default.blockEdgeWidth, y * _options2.default.blockWidth + _options2.default.blockEdgeWidth, _options2.default.blockWidth - _options2.default.blockEdgeWidth * 2, _options2.default.blockWidth - _options2.default.blockEdgeWidth * 2);
+	            ctx.fillRect(x * this.block_width + _options2.default.blockEdgeWidth, y * this.block_width + _options2.default.blockEdgeWidth, this.block_width - _options2.default.blockEdgeWidth * 2, this.block_width - _options2.default.blockEdgeWidth * 2);
 	          }
 	        }
 	      }
 	    }
 	  }, {
-	    key: 'hasFullLines',
-	    value: function hasFullLines() {
-	      for (var y = 0; y < FIELD_HEIGHT_IN_BLOCKS; y++) {
+	    key: 'checkAndRemoveFullLines',
+	    value: function checkAndRemoveFullLines() {
+	      for (var i = 0; i < 20; i++) {
 	        var fullLine = true;
-	        for (var x = 0; x < FIELD_WIDTH_IN_BLOCKS; x++) {
-	          if (this.gameField[y][x] == " ") {
+
+	        for (var x = 0; x < 10; x++) {
+	          if (this.gameField[i][x] == " ") {
 	            fullLine = false;
 	          }
 	        }
+
+	        if (fullLine) {
+	          this.numberOfLines++;
+	          this.removeLine(i);
+	        }
 	      }
-	      return fullLine;
 	    }
 	  }, {
-	    key: 'shiftAllLinesDownFromLineNumber',
-	    value: function shiftAllLinesDownFromLineNumber(number) {
-	      for (var y = number; y > 0; y--) {
-	        for (var x = 0; x < FIELD_WIDTH_IN_BLOCKS; x++) {
-	          this.level[i][x] = this.level[i - 1][x];
+	    key: 'removeLine',
+	    value: function removeLine(from) {
+	      for (var i = from; i > 0; i--) {
+	        for (var x = 0; x < 10; x++) {
+	          var valueAbove = this.gameField[i - 1][x];
+	          this.gameField[i][x] = valueAbove;
 	        }
 	      }
 	    }
@@ -472,14 +475,14 @@
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 	var TetrisBlock = function () {
-	  function TetrisBlock(blockType, x, y) {
+	  function TetrisBlock(blockType, x, y, blockwidth) {
 	    _classCallCheck(this, TetrisBlock);
 
 	    this.blockType = new _blockType2.default(blockType);
 	    this._x = x;
 	    this._y = y;
 	    this._activeState = 0;
-	    this._block_width = 20;
+	    this._block_width = blockwidth;
 	  }
 
 	  _createClass(TetrisBlock, [{
@@ -491,9 +494,9 @@
 	        for (var x = 0; x < block[y].length; x++) {
 	          if (block[y][x] == 1) {
 	            ctx.fillStyle = this.blockType.outerColor;
-	            ctx.fillRect((this._x + x) * _options2.default.blockWidth, (this._y + y) * _options2.default.blockWidth, _options2.default.blockWidth, _options2.default.blockWidth);
+	            ctx.fillRect((this._x + x) * this.blockWidth, (this._y + y) * this.blockWidth, this.blockWidth, this.blockWidth);
 	            ctx.fillStyle = this.blockType.innerColor;
-	            ctx.fillRect((this._x + x) * _options2.default.blockWidth + 1, (this._y + y) * _options2.default.blockWidth + 1, _options2.default.blockWidth - 1 * 2, _options2.default.blockWidth - 1 * 2);
+	            ctx.fillRect((this._x + x) * this.blockWidth + 1, (this._y + y) * this.blockWidth + 1, this.blockWidth - 1 * 2, this.blockWidth - 1 * 2);
 	          }
 	        }
 	      }
@@ -506,6 +509,18 @@
 	      } else {
 	        this._activeState = 0;
 	      }
+	    }
+	  }, {
+	    key: 'nextState',
+	    value: function nextState() {
+	      var nextState = void 0;
+	      if (this._activeState < this.blockType.numberOfBlockStates() - 1) {
+	        nextState = this._activeState + 1;
+	      } else {
+	        nextState = 0;
+	      }
+
+	      return this.blockType.states[nextState];
 	    }
 	  }, {
 	    key: 'moveLeft',
@@ -551,259 +566,17 @@
 	    set: function set(newBlockType) {
 	      this._blockType = newBlockType;
 	    }
+	  }, {
+	    key: 'blockWidth',
+	    get: function get() {
+	      return this._block_width;
+	    }
 	  }]);
 
 	  return TetrisBlock;
 	}();
 
 	/*
-
-	this.getInnerColor = function()
-	{
-	if(type == "I")
-	return I_color;
-	else if(type == "J")
-	return J_color;
-	else if(type == "L")
-	return L_color;
-	else if(type == "O")
-	return O_color;
-	else if(type == "S")
-	return S_color;
-	else if(type == "T")
-	return T_color;
-	else if(type == "Z")
-	return Z_color;
-	}
-
-	this.getOuterColor = function()
-	{
-	return blockEdgecolor;
-	}
-
-	this.rotate = function(level)
-	{
-	if(type == "I")
-	{
-	if(state == "I0")
-	{
-	if(rotateAlowed(I1, level, this.x, this.y))
-	{
-	this.array = I1;
-	state = "I1";
-	}
-	}
-	else if (state == "I1")
-	{
-	if(rotateAlowed(I2, level, this.x, this.y))
-	{
-	this.array = I2;
-	state = "I2";
-	}
-	}
-	else if(state == "I2")
-	{
-	if(rotateAlowed(I3, level, this.x, this.y))
-	{
-	this.array = I3;
-	state = "I3";
-	}
-	}
-	else if (state == "I3")
-	{
-	if(rotateAlowed(I0, level, this.x, this.y))
-	{
-	this.array = I0;
-	state = "I0";
-	}
-	}
-	}
-
-	else if(type == "Z")
-	{
-	if(state == "Z0")
-	{
-	if(rotateAlowed(Z1, level, this.x, this.y))
-	{
-	this.array = Z1;
-	state = "Z1";
-	}
-	}
-	else if (state == "Z1")
-	{
-	if(rotateAlowed(Z2, level, this.x, this.y))
-	{
-	this.array = Z2;
-	state = "Z2";
-	}
-	}
-	else if(state == "Z2")
-	{
-	if(rotateAlowed(Z3, level, this.x, this.y))
-	{
-	this.array = Z3;
-	state = "Z3";
-	}
-	}
-	else if (state == "Z3")
-	{
-	if(rotateAlowed(Z0, level, this.x, this.y))
-	{
-	this.array = Z0;
-	state = "Z0";
-	}
-	}
-	}
-
-	if(type == "O")
-	{
-	}
-
-	if(type == "L")
-	{
-	if(state == "L0")
-	{
-	if(rotateAlowed(L1, level, this.x, this.y))
-	{
-	this.array = L1;
-	state = "L1";
-	}
-	}
-	else if (state == "L1")
-	{
-	if(rotateAlowed(L2, level, this.x, this.y))
-	{
-	this.array = L2;
-	state = "L2";
-	}
-	}
-	else if(state == "L2")
-	{
-	if(rotateAlowed(L3, level, this.x, this.y))
-	{
-	this.array = L3;
-	state = "L3";
-	}
-	}
-	else if (state == "L3")
-	{
-	if(rotateAlowed(L0, level, this.x, this.y))
-	{
-	this.array = L0;
-	state = "L0";
-	}
-	}
-	}
-
-	if(type == "J")
-	{
-	if(state == "J0")
-	{
-	if(rotateAlowed(J1, level, this.x, this.y))
-	{
-	this.array = J1;
-	state = "J1";
-	}
-	}
-	else if (state == "J1")
-	{
-	if(rotateAlowed(J2, level, this.x, this.y))
-	{
-	this.array = J2;
-	state = "J2";
-	}
-	}
-	else if(state == "J2")
-	{
-	if(rotateAlowed(J3, level, this.x, this.y))
-	{
-	this.array = J3;
-	state = "J3";
-	}
-	}
-	else if (state == "J3")
-	{
-	if(rotateAlowed(J0, level, this.x, this.y))
-	{
-	this.array = J0;
-	state = "J0";
-	}
-	}
-	}
-
-	if(type == "S")
-	{
-	if(state == "S0")
-	{
-	if(rotateAlowed(S1, level, this.x, this.y))
-	{
-	this.array = S1;
-	state = "S1";
-	}
-	}
-	else if (state == "S1")
-	{
-	if(rotateAlowed(S2, level, this.x, this.y))
-	{
-	this.array = S2;
-	state = "S2";
-	}
-	}
-	else if(state == "S2")
-	{
-	if(rotateAlowed(S3, level, this.x, this.y))
-	{
-	this.array = S3;
-	state = "S3";
-	}
-	}
-	else if (state == "S3")
-	{
-	if(rotateAlowed(S0, level, this.x, this.y))
-	{
-	this.array = S0;
-	state = "S0";
-	}
-	}
-	}
-
-	if(type == "T")
-	{
-	if(state == "T0")
-	{
-	if(rotateAlowed(T1, level, this.x, this.y))
-	{
-	this.array = T1;
-	state = "T1";
-	}
-	}
-	else if (state == "T1")
-	{
-	if(rotateAlowed(T2, level, this.x, this.y))
-	{
-	this.array = T2;
-	state = "T2";
-	}
-	}
-	else if(state == "T2")
-	{
-	if(rotateAlowed(T3, level, this.x, this.y))
-	{
-	this.array = T3;
-	state = "T3";
-	}
-	}
-	else if (state == "T3")
-	{
-	if(rotateAlowed(T0, level, this.x, this.y))
-	{
-	this.array = T0;
-	state = "T0";
-	}
-	}
-	}
-	}
-
 	function rotateAlowed(newPositions, level, blockx, blocky)
 	{
 	for(var searchY=0; searchY<4; searchY++)
@@ -864,7 +637,7 @@
 	    this._blockLetter = blockLetter;
 	    this._outerColor = _options2.default.blockEdgecolor;
 
-	    var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]], [[0, 0, 0, 0], [0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0]]];
+	    var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]]];
 
 	    var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]]];
 

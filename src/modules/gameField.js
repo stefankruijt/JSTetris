@@ -5,8 +5,9 @@ const FIELD_HEIGHT_IN_BLOCKS = 20;
 
 export default class GameField {
 
-  constructor() {
+  constructor(canvas) {
     this.gameField = this.initializeEmptyGameField();
+    this.block_width = canvas.width / FIELD_WIDTH_IN_BLOCKS;
   }
 
   addBlockToField(block) {
@@ -63,7 +64,7 @@ export default class GameField {
       for(var x=0; x<10; x++) {
         if (this.gameField[y][x] != " ") {
           ctx.fillStyle = Options.blockEdgecolor;
-          ctx.fillRect(x*Options.blockWidth, y*Options.blockWidth, Options.blockWidth, Options.blockWidth);
+          ctx.fillRect(x*this.block_width, y*this.block_width, this.block_width, this.block_width);
 
           if(this.gameField[y][x] == "I")
             ctx.fillStyle = Options.blockTypeIColor;
@@ -79,29 +80,35 @@ export default class GameField {
             ctx.fillStyle = Options.blockTypeTColor;
           else if(this.gameField[y][x] == "Z")
             ctx.fillStyle = Options.blockTypeZColor;
-            ctx.fillRect(x*Options.blockWidth + Options.blockEdgeWidth, y*Options.blockWidth + Options.blockEdgeWidth,
-                         Options.blockWidth-Options.blockEdgeWidth*2, Options.blockWidth-Options.blockEdgeWidth*2);
+            ctx.fillRect(x*this.block_width + Options.blockEdgeWidth, y*this.block_width + Options.blockEdgeWidth,
+                         this.block_width-Options.blockEdgeWidth*2, this.block_width-Options.blockEdgeWidth*2);
         }
       }
     }
   }
 
-  hasFullLines() {
-    for(let y=0; y<FIELD_HEIGHT_IN_BLOCKS; y++) {
+  checkAndRemoveFullLines() {
+    for(var i=0; i<20; i++) {
       var fullLine = true;
-      for(let x=0; x<FIELD_WIDTH_IN_BLOCKS; x++) {
-        if(this.gameField[y][x] == " ") {
+
+      for(var x=0; x<10; x++) {
+        if(this.gameField[i][x] == " ") {
           fullLine = false;
         }
       }
+
+      if(fullLine) {
+        this.numberOfLines++;
+        this.removeLine(i);
+      }
     }
-    return fullLine
   }
 
-  shiftAllLinesDownFromLineNumber(number) {
-    for(let y=number; y>0; y--) {
-      for(let x=0; x<FIELD_WIDTH_IN_BLOCKS; x++) {
-        this.level[i][x] = this.level[i-1][x];
+  removeLine(from) {
+    for(var i = from; i>0; i--) {
+      for(var x=0; x<10; x++) {
+        var valueAbove = this.gameField[i-1][x];
+        this.gameField[i][x] =  valueAbove;
       }
     }
   }

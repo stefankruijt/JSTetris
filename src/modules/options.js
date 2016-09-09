@@ -1,9 +1,7 @@
-const GAME_WIDTH        = 250,
-      GAME_HEIGHT       = 500,
-      BLOCK_WIDTH       = GAME_WIDTH/10,
-      BLOCK_EDGE_WIDTH  = 1,
+const BLOCK_EDGE_WIDTH  = 1,
       BLOCK_EDGE_COLOR  = "#000000", // black
-      FPS               = 10,
+      GAME_SPEED    = 50,
+      FPS               = 60,
 
       BLOCKTYPE_Z_COLOR = "#FF0000", // red
       BLOCKTYPE_I_COLOR = "#00FFFF", // cyan
@@ -11,17 +9,11 @@ const GAME_WIDTH        = 250,
       BLOCKTYPE_O_COLOR = "#FFFF00", // yellow
       BLOCKTYPE_J_COLOR = "#0000FF", // blue
       BLOCKTYPE_S_COLOR = "#008000", // green
-      BLOCKTYPE_T_COLOR = "#800080"; // purple
+      BLOCKTYPE_T_COLOR = "#800080", // purple
+
+      DEBUG             = false;
 
 export default class Options {
-
-  static get game_width() {
-    return GAME_WIDTH;
-  }
-
-  static get game_height() {
-    return GAME_HEIGHT;
-  }
 
   static get blockEdgeWidth() {
     return BLOCK_EDGE_WIDTH;
@@ -31,8 +23,8 @@ export default class Options {
     return BLOCK_EDGE_COLOR;
   }
 
-  static get blockWidth() {
-    return BLOCK_WIDTH;
+  static get gameSpeed() {
+    return GAME_SPEED;
   }
 
   static get frameDuration() {
