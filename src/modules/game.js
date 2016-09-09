@@ -93,8 +93,8 @@ export default class Game {
     let x = block.x + xMovement;
     let y = block.y + yMovement;
 
-    for(var i=0; i<state.length; i++) {
-      for(var j=0; j<state[i].length; j++) {
+    for(let i=0; i<state.length; i++) {
+      for(let j=0; j<state[i].length; j++) {
         if(state[i][j] == 1) {
           var fieldY = y + i;
           var fieldX = x + j;

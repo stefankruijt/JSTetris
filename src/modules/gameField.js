@@ -27,9 +27,9 @@ export default class GameField {
   initializeEmptyGameField() {
     let gameField = new Array();
 
-    for(var y=0; y<FIELD_HEIGHT_IN_BLOCKS; y++) {
+    for(let y=0; y<FIELD_HEIGHT_IN_BLOCKS; y++) {
       gameField[y] = new Array();
-      for(var x=0; x<FIELD_WIDTH_IN_BLOCKS; x++) {
+      for(let x=0; x<FIELD_WIDTH_IN_BLOCKS; x++) {
         gameField[y][x] = " ";
       }
     }
@@ -60,8 +60,8 @@ export default class GameField {
   }
 
   drawGameField(ctx) {
-    for(var y=0; y<20; y++) {
-      for(var x=0; x<10; x++) {
+    for(let y=0; y<20; y++) {
+      for(let x=0; x<10; x++) {
         if (this.gameField[y][x] != " ") {
           ctx.fillStyle = Options.blockEdgecolor;
           ctx.fillRect(x*this.block_width, y*this.block_width, this.block_width, this.block_width);
@@ -88,10 +88,10 @@ export default class GameField {
   }
 
   checkAndRemoveFullLines() {
-    for(var i=0; i<20; i++) {
+    for(let i=0; i<20; i++) {
       var fullLine = true;
 
-      for(var x=0; x<10; x++) {
+      for(let x=0; x<10; x++) {
         if(this.gameField[i][x] == " ") {
           fullLine = false;
         }
@@ -105,8 +105,8 @@ export default class GameField {
   }
 
   removeLine(from) {
-    for(var i = from; i>0; i--) {
-      for(var x=0; x<10; x++) {
+    for(let i = from; i>0; i--) {
+      for(let x=0; x<10; x++) {
         var valueAbove = this.gameField[i-1][x];
         this.gameField[i][x] =  valueAbove;
       }
