@@ -576,38 +576,6 @@
 	  return TetrisBlock;
 	}();
 
-	/*
-	function rotateAlowed(newPositions, level, blockx, blocky)
-	{
-	for(var searchY=0; searchY<4; searchY++)
-	{
-	for (var searchX = 0; searchX < 4; searchX++)
-	{
-	if(newPositions[searchY][searchX] == 1)
-	{
-	var x2 = blockx + searchX;
-	var y2 = blocky + searchY;
-	if(x2>10)
-	{
-	return false;
-	}
-	else if(y2>20)
-	{
-	return false;
-	}
-
-	else if(level[y2][x2] != " ")
-	{
-	return false;
-	}
-	}
-	}
-	}
-	return true;
-	}
-	}*/
-
-
 	exports.default = TetrisBlock;
 
 /***/ },
@@ -681,8 +649,6 @@
 	        this._states = blockTypesT;
 	        break;
 	    }
-
-	    console.log("BlockType " + this._blockLetter + " created with inner color of " + this._innerColor + " and outerColor " + this._outerColor);
 	  }
 
 	  _createClass(BlockType, [{

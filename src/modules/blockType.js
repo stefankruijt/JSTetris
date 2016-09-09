@@ -66,8 +66,6 @@ export default class BlockType {
         this._states = blockTypesT;
         break;
     }
-
-    console.log(`BlockType ${this._blockLetter} created with inner color of ${this._innerColor} and outerColor ${this._outerColor}`);
   }
 
   numberOfBlockStates() {
