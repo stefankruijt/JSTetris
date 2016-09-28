@@ -1,5 +1,5 @@
+import * as constants from './constants';
 import BlockType from './blockType';
-import Options from './options';
 
 export default class TetrisBlock {
   constructor(blockType, x, y, blockwidth) {

@@ -87,9 +87,9 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _options = __webpack_require__(3);
+	var _constants = __webpack_require__(3);
 
-	var _options2 = _interopRequireDefault(_options);
+	var constants = _interopRequireWildcard(_constants);
 
 	var _gameField = __webpack_require__(4);
 
@@ -100,6 +100,8 @@
 	var _tetrisBlock2 = _interopRequireDefault(_tetrisBlock);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -225,99 +227,22 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
+	var DEBUG = exports.DEBUG = false;
+	var GAME_SPEED = exports.GAME_SPEED = 50;
+	var FPS = exports.FPS = 60;
 
-	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+	var BLOCK_EDGE_WIDTH = exports.BLOCK_EDGE_WIDTH = 1;
+	var FIELD_WIDTH_IN_BLOCKS = exports.FIELD_WIDTH_IN_BLOCKS = 10;
+	var FIELD_HEIGHT_IN_BLOCKS = exports.FIELD_HEIGHT_IN_BLOCKS = 20;
 
-	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var BLOCK_EDGE_WIDTH = 1,
-	    BLOCK_EDGE_COLOR = "#000000",
-	    // black
-	GAME_SPEED = 50,
-	    FPS = 60,
-	    BLOCKTYPE_Z_COLOR = "#FF0000",
-	    // red
-	BLOCKTYPE_I_COLOR = "#00FFFF",
-	    // cyan
-	BLOCKTYPE_L_COLOR = "#ffa500",
-	    // orange
-	BLOCKTYPE_O_COLOR = "#FFFF00",
-	    // yellow
-	BLOCKTYPE_J_COLOR = "#0000FF",
-	    // blue
-	BLOCKTYPE_S_COLOR = "#008000",
-	    // green
-	BLOCKTYPE_T_COLOR = "#800080",
-	    // purple
-
-	DEBUG = false;
-
-	var Options = function () {
-	  function Options() {
-	    _classCallCheck(this, Options);
-	  }
-
-	  _createClass(Options, null, [{
-	    key: "blockEdgeWidth",
-	    get: function get() {
-	      return BLOCK_EDGE_WIDTH;
-	    }
-	  }, {
-	    key: "blockEdgecolor",
-	    get: function get() {
-	      return BLOCK_EDGE_COLOR;
-	    }
-	  }, {
-	    key: "gameSpeed",
-	    get: function get() {
-	      return GAME_SPEED;
-	    }
-	  }, {
-	    key: "frameDuration",
-	    get: function get() {
-	      return 1000 / FPS;
-	    }
-	  }, {
-	    key: "blockTypeZColor",
-	    get: function get() {
-	      return BLOCKTYPE_Z_COLOR;
-	    }
-	  }, {
-	    key: "blockTypeIColor",
-	    get: function get() {
-	      return BLOCKTYPE_I_COLOR;
-	    }
-	  }, {
-	    key: "blockTypeLColor",
-	    get: function get() {
-	      return BLOCKTYPE_L_COLOR;
-	    }
-	  }, {
-	    key: "blockTypeOColor",
-	    get: function get() {
-	      return BLOCKTYPE_O_COLOR;
-	    }
-	  }, {
-	    key: "blockTypeJColor",
-	    get: function get() {
-	      return BLOCKTYPE_J_COLOR;
-	    }
-	  }, {
-	    key: "blockTypeSColor",
-	    get: function get() {
-	      return BLOCKTYPE_S_COLOR;
-	    }
-	  }, {
-	    key: "blockTypeTColor",
-	    get: function get() {
-	      return BLOCKTYPE_T_COLOR;
-	    }
-	  }]);
-
-	  return Options;
-	}();
-
-	exports.default = Options;
+	var BLOCK_EDGE_COLOR = exports.BLOCK_EDGE_COLOR = "#000000"; // black
+	var BLOCKTYPE_Z_COLOR = exports.BLOCKTYPE_Z_COLOR = "#FF0000"; // red
+	var BLOCKTYPE_I_COLOR = exports.BLOCKTYPE_I_COLOR = "#00FFFF"; // cyan
+	var BLOCKTYPE_L_COLOR = exports.BLOCKTYPE_L_COLOR = "#ffa500"; // orange
+	var BLOCKTYPE_O_COLOR = exports.BLOCKTYPE_O_COLOR = "#FFFF00"; // yellow
+	var BLOCKTYPE_J_COLOR = exports.BLOCKTYPE_J_COLOR = "#0000FF"; // blue
+	var BLOCKTYPE_S_COLOR = exports.BLOCKTYPE_S_COLOR = "#008000"; // green
+	var BLOCKTYPE_T_COLOR = exports.BLOCKTYPE_T_COLOR = "#800080"; // purple
 
 /***/ },
 /* 4 */
@@ -331,16 +256,13 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _options = __webpack_require__(3);
+	var _constants = __webpack_require__(3);
 
-	var _options2 = _interopRequireDefault(_options);
+	var constants = _interopRequireWildcard(_constants);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-	var FIELD_WIDTH_IN_BLOCKS = 10;
-	var FIELD_HEIGHT_IN_BLOCKS = 20;
 
 	var GameField = function () {
 	  function GameField(canvas) {
@@ -408,11 +330,11 @@
 	      for (var y = 0; y < 20; y++) {
 	        for (var x = 0; x < 10; x++) {
 	          if (this.gameField[y][x] != " ") {
-	            ctx.fillStyle = _options2.default.blockEdgecolor;
+	            ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
 	            ctx.fillRect(x * this.block_width, y * this.block_width, this.block_width, this.block_width);
 
-	            if (this.gameField[y][x] == "I") ctx.fillStyle = _options2.default.blockTypeIColor;else if (this.gameField[y][x] == "J") ctx.fillStyle = _options2.default.blockTypeJColor;else if (this.gameField[y][x] == "L") ctx.fillStyle = _options2.default.blockTypeLColor;else if (this.gameField[y][x] == "O") ctx.fillStyle = _options2.default.blockTypeOColor;else if (this.gameField[y][x] == "S") ctx.fillStyle = _options2.default.blockTypeSColor;else if (this.gameField[y][x] == "T") ctx.fillStyle = _options2.default.blockTypeTColor;else if (this.gameField[y][x] == "Z") ctx.fillStyle = _options2.default.blockTypeZColor;
-	            ctx.fillRect(x * this.block_width + _options2.default.blockEdgeWidth, y * this.block_width + _options2.default.blockEdgeWidth, this.block_width - _options2.default.blockEdgeWidth * 2, this.block_width - _options2.default.blockEdgeWidth * 2);
+	            if (this.gameField[y][x] == "I") ctx.fillStyle = constants.BLOCKTYPE_I_COLOR;else if (this.gameField[y][x] == "J") ctx.fillStyle = constants.BLOCKTYPE_J_COLOR;else if (this.gameField[y][x] == "L") ctx.fillStyle = constants.BLOCKTYPE_L_COLOR;else if (this.gameField[y][x] == "O") ctx.fillStyle = constants.BLOCKTYPE_O_COLOR;else if (this.gameField[y][x] == "S") ctx.fillStyle = constants.BLOCKTYPE_S_COLOR;else if (this.gameField[y][x] == "T") ctx.fillStyle = constants.BLOCKTYPE_T_COLOR;else if (this.gameField[y][x] == "Z") ctx.fillStyle = constants.BLOCKTYPE_Z_COLOR;
+	            ctx.fillRect(x * this.block_width + constants.BLOCK_EDGE_WIDTH, y * this.block_width + constants.BLOCK_EDGE_WIDTH, this.block_width - constants.BLOCK_EDGE_WIDTH * 2, this.block_width - constants.BLOCK_EDGE_WIDTH * 2);
 	          }
 	        }
 	      }
@@ -464,15 +386,17 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+	var _constants = __webpack_require__(3);
+
+	var constants = _interopRequireWildcard(_constants);
+
 	var _blockType = __webpack_require__(6);
 
 	var _blockType2 = _interopRequireDefault(_blockType);
 
-	var _options = __webpack_require__(3);
-
-	var _options2 = _interopRequireDefault(_options);
-
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -592,11 +516,11 @@
 
 	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-	var _options = __webpack_require__(3);
+	var _constants = __webpack_require__(3);
 
-	var _options2 = _interopRequireDefault(_options);
+	var constants = _interopRequireWildcard(_constants);
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -605,7 +529,7 @@
 	    _classCallCheck(this, BlockType);
 
 	    this._blockLetter = blockLetter;
-	    this._outerColor = _options2.default.blockEdgecolor;
+	    this._outerColor = constants.BLOCK_EDGE_COLOR;
 
 	    var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]]];
 
@@ -623,31 +547,31 @@
 
 	    switch (blockLetter) {
 	      case "I":
-	        this._innerColor = _options2.default.blockTypeIColor;
+	        this._innerColor = constants.BLOCKTYPE_I_COLOR;
 	        this._states = blockTypesI;
 	        break;
 	      case "Z":
-	        this._innerColor = _options2.default.blockTypeZColor;
+	        this._innerColor = constants.BLOCKTYPE_Z_COLOR;
 	        this._states = blockTypesZ;
 	        break;
 	      case "O":
-	        this._innerColor = _options2.default.blockTypeOColor;
+	        this._innerColor = constants.BLOCKTYPE_O_COLOR;
 	        this._states = blockTypesO;
 	        break;
 	      case "L":
-	        this._innerColor = _options2.default.blockTypeLColor;
+	        this._innerColor = constants.BLOCKTYPE_L_COLOR;
 	        this._states = blockTypesL;
 	        break;
 	      case "J":
-	        this._innerColor = _options2.default.blockTypeJColor;
+	        this._innerColor = constants.BLOCKTYPE_J_COLOR;
 	        this._states = blockTypesJ;
 	        break;
 	      case "S":
-	        this._innerColor = _options2.default.blockTypeSColor;
+	        this._innerColor = constants.BLOCKTYPE_S_COLOR;
 	        this._states = blockTypesS;
 	        break;
 	      case "T":
-	        this._innerColor = _options2.default.blockTypeTColor;
+	        this._innerColor = constants.BLOCKTYPE_T_COLOR;
 	        this._states = blockTypesT;
 	        break;
 	    }

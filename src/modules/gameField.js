@@ -1,7 +1,4 @@
-import Options from './options';
-
-const FIELD_WIDTH_IN_BLOCKS = 10;
-const FIELD_HEIGHT_IN_BLOCKS = 20;
+import * as constants from './constants';
 
 export default class GameField {
 
@@ -63,25 +60,25 @@ export default class GameField {
     for(let y=0; y<20; y++) {
       for(let x=0; x<10; x++) {
         if (this.gameField[y][x] != " ") {
-          ctx.fillStyle = Options.blockEdgecolor;
+          ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
           ctx.fillRect(x*this.block_width, y*this.block_width, this.block_width, this.block_width);
 
           if(this.gameField[y][x] == "I")
-            ctx.fillStyle = Options.blockTypeIColor;
+            ctx.fillStyle = constants.BLOCKTYPE_I_COLOR;
           else if(this.gameField[y][x] == "J")
-            ctx.fillStyle = Options.blockTypeJColor;
+            ctx.fillStyle = constants.BLOCKTYPE_J_COLOR;
           else if(this.gameField[y][x] == "L")
-            ctx.fillStyle = Options.blockTypeLColor;
+            ctx.fillStyle = constants.BLOCKTYPE_L_COLOR;
           else if(this.gameField[y][x] == "O")
-            ctx.fillStyle = Options.blockTypeOColor;
+            ctx.fillStyle = constants.BLOCKTYPE_O_COLOR;
           else if(this.gameField[y][x] == "S")
-            ctx.fillStyle = Options.blockTypeSColor;
+            ctx.fillStyle = constants.BLOCKTYPE_S_COLOR;
           else if(this.gameField[y][x] == "T")
-            ctx.fillStyle = Options.blockTypeTColor;
+            ctx.fillStyle = constants.BLOCKTYPE_T_COLOR;
           else if(this.gameField[y][x] == "Z")
-            ctx.fillStyle = Options.blockTypeZColor;
-            ctx.fillRect(x*this.block_width + Options.blockEdgeWidth, y*this.block_width + Options.blockEdgeWidth,
-                         this.block_width-Options.blockEdgeWidth*2, this.block_width-Options.blockEdgeWidth*2);
+            ctx.fillStyle = constants.BLOCKTYPE_Z_COLOR;
+            ctx.fillRect(x*this.block_width + constants.BLOCK_EDGE_WIDTH, y*this.block_width + constants.BLOCK_EDGE_WIDTH,
+                         this.block_width-constants.BLOCK_EDGE_WIDTH*2, this.block_width-constants.BLOCK_EDGE_WIDTH*2);
         }
       }
     }

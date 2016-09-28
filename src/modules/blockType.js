@@ -1,9 +1,9 @@
-import Options from './options';
+import * as constants from './constants';
 
 export default class BlockType {
   constructor(blockLetter) {
     this._blockLetter = blockLetter;
-    this._outerColor = Options.blockEdgecolor;
+    this._outerColor = constants.BLOCK_EDGE_COLOR;
 
     let blockTypesI = [[[0,0,0,0],[1,1,1,1],[0,0,0,0],[0,0,0,0]],
                        [[0,0,1,0],[0,0,1,0],[0,0,1,0],[0,0,1,0]]];
@@ -38,31 +38,31 @@ export default class BlockType {
 
     switch(blockLetter) {
       case "I":
-        this._innerColor = Options.blockTypeIColor;
+        this._innerColor = constants.BLOCKTYPE_I_COLOR;
         this._states = blockTypesI;
         break;
       case "Z":
-        this._innerColor = Options.blockTypeZColor;
+        this._innerColor = constants.BLOCKTYPE_Z_COLOR;
         this._states = blockTypesZ;
         break;
       case "O":
-        this._innerColor = Options.blockTypeOColor;
+        this._innerColor = constants.BLOCKTYPE_O_COLOR;
         this._states = blockTypesO;
         break;
       case "L":
-        this._innerColor = Options.blockTypeLColor;
+        this._innerColor = constants.BLOCKTYPE_L_COLOR;
         this._states = blockTypesL;
         break;
       case "J":
-        this._innerColor = Options.blockTypeJColor;
+        this._innerColor = constants.BLOCKTYPE_J_COLOR;
         this._states = blockTypesJ;
         break;
       case "S":
-        this._innerColor = Options.blockTypeSColor;
+        this._innerColor = constants.BLOCKTYPE_S_COLOR;
         this._states = blockTypesS;
         break;
       case "T":
-        this._innerColor = Options.blockTypeTColor;
+        this._innerColor = constants.BLOCKTYPE_T_COLOR;
         this._states = blockTypesT;
         break;
     }

@@ -1,4 +1,5 @@
-import Options from './options';
+import * as constants from './constants';
+
 import GameField from './gameField';
 import TetrisBlock from './tetrisBlock';
 
