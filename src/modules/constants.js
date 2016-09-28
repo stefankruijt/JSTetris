@@ -6,6 +6,8 @@ export const BLOCK_EDGE_WIDTH       = 1;
 export const FIELD_WIDTH_IN_BLOCKS  = 10;
 export const FIELD_HEIGHT_IN_BLOCKS = 20;
 
+export const TETRIS_BLOCK_CHARACTERS = 'OIZLJST'
+
 export const BLOCK_EDGE_COLOR       = "#000000"; // black
 export const BLOCKTYPE_Z_COLOR      = "#FF0000"; // red
 export const BLOCKTYPE_I_COLOR      = "#00FFFF"; // cyan

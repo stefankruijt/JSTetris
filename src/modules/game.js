@@ -6,14 +6,13 @@ import TetrisBlock from './tetrisBlock';
 export default class Game {
 
   constructor(canvas) {
+    var self = this;
+
     this.ctx = canvas.getContext("2d");
     this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
     this.numberOfLines = 0;
-    var self = this;
-
     this.gameField = new GameField(canvas);
     this.currentBlock = self.getNewRandomTetrisBlock();
-
 
     document.body.onkeydown = (e) => self.gameEvent(e);
 
@@ -35,8 +34,7 @@ export default class Game {
     }
 
     function update() {
-      if (self.movementAllowed(self.currentBlock, self.currentBlock.activeState,
-          0, 1)) {
+      if (self.movementAllowed(self.currentBlock, self.currentBlock.activeState, 0, 1)) {
         self.currentBlock.moveDown();
       } else {
         self.gameField.addBlockToField(self.currentBlock);
@@ -54,35 +52,30 @@ export default class Game {
   }
 
   getNewRandomTetrisBlock() {
-    let tetrisBlockCharacters = 'OIZLJST'
-    let randomNumber = Math.floor(Math.random() * tetrisBlockCharacters.length);
-    let blockLetter = tetrisBlockCharacters.charAt(randomNumber);
+    let randomNumber = Math.floor(Math.random() * constants.TETRIS_BLOCK_CHARACTERS.length);
+    let blockLetter = constants.TETRIS_BLOCK_CHARACTERS.charAt(randomNumber);
     return new TetrisBlock(blockLetter, 3, 0, this.blockWidth);
   }
 
   gameEvent(event) {
     switch (event.key) {
       case "ArrowLeft":
-        if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, -
-            1, 0)) {
+        if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, -1, 0)) {
           this.currentBlock.moveLeft();
         }
         break;
       case "ArrowRight":
-        if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState,
-            1, 0)) {
+        if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 1, 0)) {
           this.currentBlock.moveRight();
         }
         break;
       case "ArrowUp":
-        if (this.movementAllowed(this.currentBlock, this.currentBlock.nextState(),
-            1, 0)) {
+        if (this.movementAllowed(this.currentBlock, this.currentBlock.nextState(), 1, 0)) {
           this.currentBlock.rotate();
         }
         break;
       case "ArrowDown":
-        if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState,
-            0, 1)) {
+        if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 0, 1)) {
           this.currentBlock.y = this.currentBlock.y + 1;
         }
         break;

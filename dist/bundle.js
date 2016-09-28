@@ -109,11 +109,11 @@
 	  function Game(canvas) {
 	    _classCallCheck(this, Game);
 
+	    var self = this;
+
 	    this.ctx = canvas.getContext("2d");
 	    this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
 	    this.numberOfLines = 0;
-	    var self = this;
-
 	    this.gameField = new _gameField2.default(canvas);
 	    this.currentBlock = self.getNewRandomTetrisBlock();
 
@@ -159,9 +159,8 @@
 	  _createClass(Game, [{
 	    key: 'getNewRandomTetrisBlock',
 	    value: function getNewRandomTetrisBlock() {
-	      var tetrisBlockCharacters = 'OIZLJST';
-	      var randomNumber = Math.floor(Math.random() * tetrisBlockCharacters.length);
-	      var blockLetter = tetrisBlockCharacters.charAt(randomNumber);
+	      var randomNumber = Math.floor(Math.random() * constants.TETRIS_BLOCK_CHARACTERS.length);
+	      var blockLetter = constants.TETRIS_BLOCK_CHARACTERS.charAt(randomNumber);
 	      return new _tetrisBlock2.default(blockLetter, 3, 0, this.blockWidth);
 	    }
 	  }, {
@@ -233,6 +232,8 @@
 	var BLOCK_EDGE_WIDTH = exports.BLOCK_EDGE_WIDTH = 1;
 	var FIELD_WIDTH_IN_BLOCKS = exports.FIELD_WIDTH_IN_BLOCKS = 10;
 	var FIELD_HEIGHT_IN_BLOCKS = exports.FIELD_HEIGHT_IN_BLOCKS = 20;
+
+	var TETRIS_BLOCK_CHARACTERS = exports.TETRIS_BLOCK_CHARACTERS = 'OIZLJST';
 
 	var BLOCK_EDGE_COLOR = exports.BLOCK_EDGE_COLOR = "#000000"; // black
 	var BLOCKTYPE_Z_COLOR = exports.BLOCKTYPE_Z_COLOR = "#FF0000"; // red
@@ -418,9 +419,9 @@
 	      for (var y = 0; y < block.length; y++) {
 	        for (var x = 0; x < block[y].length; x++) {
 	          if (block[y][x] == 1) {
-	            ctx.fillStyle = this.blockType.outerColor;
+	            ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
 	            ctx.fillRect((this._x + x) * this.blockWidth, (this._y + y) * this.blockWidth, this.blockWidth, this.blockWidth);
-	            ctx.fillStyle = this.blockType.innerColor;
+	            ctx.fillStyle = this.blockType.Color;
 	            ctx.fillRect((this._x + x) * this.blockWidth + 1, (this._y + y) * this.blockWidth + 1, this.blockWidth - 1 * 2, this.blockWidth - 1 * 2);
 	          }
 	        }
@@ -523,54 +524,53 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
+	var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]]];
+
+	var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]]];
+
+	var blockTypesL = [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]], [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
+	var blockTypesO = [[[0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
+
+	var blockTypesJ = [[[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0]]];
+
+	var blockTypesS = [[[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], [[1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
+	var blockTypesT = [[[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
+
 	var BlockType = function () {
 	  function BlockType(blockLetter) {
 	    _classCallCheck(this, BlockType);
 
 	    this._blockLetter = blockLetter;
-	    this._outerColor = constants.BLOCK_EDGE_COLOR;
-
-	    var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]]];
-
-	    var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]]];
-
-	    var blockTypesL = [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]], [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
-
-	    var blockTypesO = [[[0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]];
-
-	    var blockTypesJ = [[[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0]]];
-
-	    var blockTypesS = [[[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]], [[1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
-
-	    var blockTypesT = [[[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
 
 	    switch (blockLetter) {
 	      case "I":
-	        this._innerColor = constants.BLOCKTYPE_I_COLOR;
+	        this._color = constants.BLOCKTYPE_I_COLOR;
 	        this._states = blockTypesI;
 	        break;
 	      case "Z":
-	        this._innerColor = constants.BLOCKTYPE_Z_COLOR;
+	        this._color = constants.BLOCKTYPE_Z_COLOR;
 	        this._states = blockTypesZ;
 	        break;
 	      case "O":
-	        this._innerColor = constants.BLOCKTYPE_O_COLOR;
+	        this._color = constants.BLOCKTYPE_O_COLOR;
 	        this._states = blockTypesO;
 	        break;
 	      case "L":
-	        this._innerColor = constants.BLOCKTYPE_L_COLOR;
+	        this._color = constants.BLOCKTYPE_L_COLOR;
 	        this._states = blockTypesL;
 	        break;
 	      case "J":
-	        this._innerColor = constants.BLOCKTYPE_J_COLOR;
+	        this._color = constants.BLOCKTYPE_J_COLOR;
 	        this._states = blockTypesJ;
 	        break;
 	      case "S":
-	        this._innerColor = constants.BLOCKTYPE_S_COLOR;
+	        this._color = constants.BLOCKTYPE_S_COLOR;
 	        this._states = blockTypesS;
 	        break;
 	      case "T":
-	        this._innerColor = constants.BLOCKTYPE_T_COLOR;
+	        this._color = constants.BLOCKTYPE_T_COLOR;
 	        this._states = blockTypesT;
 	        break;
 	    }
@@ -590,20 +590,12 @@
 	      return this._blockLetter = letter;
 	    }
 	  }, {
-	    key: "innerColor",
+	    key: "Color",
 	    get: function get() {
-	      return this._innerColor;
+	      return this._color;
 	    },
 	    set: function set(color) {
-	      this._innerColor = color;
-	    }
-	  }, {
-	    key: "outerColor",
-	    get: function get() {
-	      return this._outerColor;
-	    },
-	    set: function set(color) {
-	      this._outerColor = color;
+	      this._color = color;
 	    }
 	  }, {
 	    key: "states",
