@@ -110,7 +110,7 @@
 	    _classCallCheck(this, Game);
 
 	    this.ctx = canvas.getContext("2d");
-	    this.blockWidth = canvas.width / 10;
+	    this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
 	    this.numberOfLines = 0;
 	    var self = this;
 
@@ -123,7 +123,6 @@
 
 	    requestAnimationFrame(mainLoop);
 	    var lastFrameTimeMs = 0;
-	    var maxFPS = 60;
 
 	    function mainLoop(timestamp) {
 	      if (timestamp < lastFrameTimeMs + 200) {
@@ -229,7 +228,7 @@
 	});
 	var DEBUG = exports.DEBUG = false;
 	var GAME_SPEED = exports.GAME_SPEED = 50;
-	var FPS = exports.FPS = 60;
+	var MAX_FPS = exports.MAX_FPS = 60;
 
 	var BLOCK_EDGE_WIDTH = exports.BLOCK_EDGE_WIDTH = 1;
 	var FIELD_WIDTH_IN_BLOCKS = exports.FIELD_WIDTH_IN_BLOCKS = 10;
@@ -269,7 +268,7 @@
 	    _classCallCheck(this, GameField);
 
 	    this.gameField = this.initializeEmptyGameField();
-	    this.block_width = canvas.width / FIELD_WIDTH_IN_BLOCKS;
+	    this.block_width = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
 	  }
 
 	  _createClass(GameField, [{
@@ -292,9 +291,9 @@
 	    value: function initializeEmptyGameField() {
 	      var gameField = new Array();
 
-	      for (var y = 0; y < FIELD_HEIGHT_IN_BLOCKS; y++) {
+	      for (var y = 0; y < constants.FIELD_HEIGHT_IN_BLOCKS; y++) {
 	        gameField[y] = new Array();
-	        for (var x = 0; x < FIELD_WIDTH_IN_BLOCKS; x++) {
+	        for (var x = 0; x < constants.FIELD_WIDTH_IN_BLOCKS; x++) {
 	          gameField[y][x] = " ";
 	        }
 	      }
@@ -318,7 +317,7 @@
 	      }
 
 	      // -1 since field starts at x=0 and y=0
-	      if (x > FIELD_WIDTH_IN_BLOCKS - 1 || y > FIELD_HEIGHT_IN_BLOCKS - 1) {
+	      if (x > constants.FIELD_WIDTH_IN_BLOCKS - 1 || y > constants.FIELD_HEIGHT_IN_BLOCKS - 1) {
 	        return false;
 	      }
 
@@ -327,8 +326,8 @@
 	  }, {
 	    key: 'drawGameField',
 	    value: function drawGameField(ctx) {
-	      for (var y = 0; y < 20; y++) {
-	        for (var x = 0; x < 10; x++) {
+	      for (var y = 0; y < constants.FIELD_HEIGHT_IN_BLOCKS; y++) {
+	        for (var x = 0; x < constants.FIELD_WIDTH_IN_BLOCKS; x++) {
 	          if (this.gameField[y][x] != " ") {
 	            ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
 	            ctx.fillRect(x * this.block_width, y * this.block_width, this.block_width, this.block_width);
@@ -342,10 +341,10 @@
 	  }, {
 	    key: 'checkAndRemoveFullLines',
 	    value: function checkAndRemoveFullLines() {
-	      for (var i = 0; i < 20; i++) {
+	      for (var i = 0; i < constants.FIELD_HEIGHT_IN_BLOCKS; i++) {
 	        var fullLine = true;
 
-	        for (var x = 0; x < 10; x++) {
+	        for (var x = 0; x < constants.FIELD_WIDTH_IN_BLOCKS; x++) {
 	          if (this.gameField[i][x] == " ") {
 	            fullLine = false;
 	          }
@@ -361,7 +360,7 @@
 	    key: 'removeLine',
 	    value: function removeLine(from) {
 	      for (var i = from; i > 0; i--) {
-	        for (var x = 0; x < 10; x++) {
+	        for (var x = 0; x < constants.FIELD_WIDTH_IN_BLOCKS; x++) {
 	          var valueAbove = this.gameField[i - 1][x];
 	          this.gameField[i][x] = valueAbove;
 	        }

@@ -4,7 +4,7 @@ export default class GameField {
 
   constructor(canvas) {
     this.gameField = this.initializeEmptyGameField();
-    this.block_width = canvas.width / FIELD_WIDTH_IN_BLOCKS;
+    this.block_width = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
   }
 
   addBlockToField(block) {
@@ -24,9 +24,9 @@ export default class GameField {
   initializeEmptyGameField() {
     let gameField = new Array();
 
-    for(let y=0; y<FIELD_HEIGHT_IN_BLOCKS; y++) {
+    for(let y=0; y<constants.FIELD_HEIGHT_IN_BLOCKS; y++) {
       gameField[y] = new Array();
-      for(let x=0; x<FIELD_WIDTH_IN_BLOCKS; x++) {
+      for(let x=0; x<constants.FIELD_WIDTH_IN_BLOCKS; x++) {
         gameField[y][x] = " ";
       }
     }
@@ -49,7 +49,7 @@ export default class GameField {
     }
 
     // -1 since field starts at x=0 and y=0
-    if(x > FIELD_WIDTH_IN_BLOCKS-1 || y > FIELD_HEIGHT_IN_BLOCKS-1) {
+    if(x > constants.FIELD_WIDTH_IN_BLOCKS-1 || y > constants.FIELD_HEIGHT_IN_BLOCKS-1) {
       return false;
     }
 
@@ -57,8 +57,8 @@ export default class GameField {
   }
 
   drawGameField(ctx) {
-    for(let y=0; y<20; y++) {
-      for(let x=0; x<10; x++) {
+    for(let y=0; y<constants.FIELD_HEIGHT_IN_BLOCKS; y++) {
+      for(let x=0; x<constants.FIELD_WIDTH_IN_BLOCKS; x++) {
         if (this.gameField[y][x] != " ") {
           ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
           ctx.fillRect(x*this.block_width, y*this.block_width, this.block_width, this.block_width);
@@ -85,10 +85,10 @@ export default class GameField {
   }
 
   checkAndRemoveFullLines() {
-    for(let i=0; i<20; i++) {
+    for(let i=0; i<constants.FIELD_HEIGHT_IN_BLOCKS; i++) {
       var fullLine = true;
 
-      for(let x=0; x<10; x++) {
+      for(let x=0; x<constants.FIELD_WIDTH_IN_BLOCKS; x++) {
         if(this.gameField[i][x] == " ") {
           fullLine = false;
         }
@@ -103,7 +103,7 @@ export default class GameField {
 
   removeLine(from) {
     for(let i = from; i>0; i--) {
-      for(let x=0; x<10; x++) {
+      for(let x=0; x<constants.FIELD_WIDTH_IN_BLOCKS; x++) {
         var valueAbove = this.gameField[i-1][x];
         this.gameField[i][x] =  valueAbove;
       }

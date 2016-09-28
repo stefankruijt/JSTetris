@@ -7,7 +7,7 @@ export default class Game {
 
   constructor(canvas) {
     this.ctx = canvas.getContext("2d");
-    this.blockWidth = canvas.width / 10;
+    this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
     this.numberOfLines = 0;
     var self = this;
 
@@ -19,7 +19,6 @@ export default class Game {
 
     requestAnimationFrame(mainLoop);
     var lastFrameTimeMs = 0;
-    var maxFPS = 60;
 
     function mainLoop(timestamp) {
       if (timestamp < lastFrameTimeMs + 200) {
