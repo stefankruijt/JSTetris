@@ -158,8 +158,10 @@
 	  _createClass(Game, [{
 	    key: 'getNewRandomTetrisBlock',
 	    value: function getNewRandomTetrisBlock() {
-	      var random = Math.floor(Math.random() * 7);
-	      if (random == 0) return new _tetrisBlock2.default("O", 3, 0, this.blockWidth);else if (random == 1) return new _tetrisBlock2.default("I", 3, 0, this.blockWidth);else if (random == 2) return new _tetrisBlock2.default("Z", 3, 0, this.blockWidth);else if (random == 3) return new _tetrisBlock2.default("L", 3, 0, this.blockWidth);else if (random == 4) return new _tetrisBlock2.default("J", 3, 0, this.blockWidth);else if (random == 5) return new _tetrisBlock2.default("S", 3, 0, this.blockWidth);else if (random == 6) return new _tetrisBlock2.default("T", 3, 0, this.blockWidth);
+	      var tetrisBlockCharacters = 'OIZLJST';
+	      var randomNumber = Math.floor(Math.random() * tetrisBlockCharacters.length);
+	      var blockLetter = tetrisBlockCharacters.charAt(randomNumber);
+	      return new _tetrisBlock2.default(blockLetter, 3, 0, this.blockWidth);
 	    }
 	  }, {
 	    key: 'gameEvent',
