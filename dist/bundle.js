@@ -430,15 +430,16 @@
 	  }, {
 	    key: 'rotate',
 	    value: function rotate() {
-	      if (this._activeState < this.blockType.numberOfBlockStates() - 1) {
-	        this._activeState = this._activeState + 1;
-	      } else {
-	        this._activeState = 0;
-	      }
+	      this._activeState = this.nextStateNumber();
 	    }
 	  }, {
 	    key: 'nextState',
 	    value: function nextState() {
+	      return this.blockType.states[this.nextStateNumber()];
+	    }
+	  }, {
+	    key: 'nextStateNumber',
+	    value: function nextStateNumber() {
 	      var nextState = void 0;
 	      if (this._activeState < this.blockType.numberOfBlockStates() - 1) {
 	        nextState = this._activeState + 1;
@@ -446,7 +447,7 @@
 	        nextState = 0;
 	      }
 
-	      return this.blockType.states[nextState];
+	      return nextState;
 	    }
 	  }, {
 	    key: 'moveLeft',
@@ -526,7 +527,7 @@
 
 	var blockTypesI = [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]]];
 
-	var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [1, 1, 0, 0], [1, 0, 0, 0], [0, 0, 0, 0]]];
+	var blockTypesZ = [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
 
 	var blockTypesL = [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]], [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]], [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]], [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]];
 

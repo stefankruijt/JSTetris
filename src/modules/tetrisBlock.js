@@ -26,15 +26,14 @@ export default class TetrisBlock {
   }
 
   rotate() {
-    if(this._activeState < this.blockType.numberOfBlockStates()-1) {
-      this._activeState = this._activeState + 1;
-    }
-    else {
-      this._activeState = 0;
-    }
+    this._activeState = this.nextStateNumber();
   }
 
   nextState() {
+    return this.blockType.states[this.nextStateNumber()];
+  }
+
+  nextStateNumber() {
     let nextState;
     if(this._activeState < this.blockType.numberOfBlockStates()-1) {
       nextState = this._activeState + 1;
@@ -43,7 +42,7 @@ export default class TetrisBlock {
       nextState = 0;
     }
 
-    return this.blockType.states[nextState];
+    return nextState;
   }
 
   moveLeft() {
