@@ -78,7 +78,7 @@
 	Object.defineProperty(exports, "__esModule", {
 	  value: true
 	});
-	exports.default = "\n<div>\n  <canvas id=\"tetrisCanvas\" width=\"250\" height=\"500\" style=\"background-color:#147479\"></canvas>\n</div>\n  ";
+	exports.default = "\n  <canvas id=\"tetrisCanvas\" width=\"250\" height=\"500\" style=\"background-color:#147479\"></canvas>\n  ";
 
 /***/ },
 /* 2 */
