@@ -7,6 +7,12 @@ function startGame() {
   new Game(document.getElementById('tetrisCanvas'));
 }
 
-document.body.innerHTML = canvas;
+let game = document.getElementsByTagName('tetris-game')
+if(game.length === 0) {
+  console.error("Element <tetris-game> not found.");
+}
+else {
+  game[0].innerHTML = canvas;
+}
 
 startGame();

@@ -60,7 +60,12 @@
 	  new _game2.default(document.getElementById('tetrisCanvas'));
 	}
 
-	document.body.innerHTML = _canvas2.default;
+	var game = document.getElementsByTagName('tetris-game');
+	if (game.length === 0) {
+	  console.error("Element <tetris-game> not found.");
+	} else {
+	  game[0].innerHTML = _canvas2.default;
+	}
 
 	startGame();
 

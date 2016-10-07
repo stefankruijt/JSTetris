@@ -83,17 +83,16 @@ export default class Game {
   }
 
   movementAllowed(block, state, xMovement, yMovement) {
-    let x = block.x + xMovement;
-    let y = block.y + yMovement;
+    const x = block.x + xMovement;
+    const y = block.y + yMovement;
 
     for (let i = 0; i < state.length; i++) {
       for (let j = 0; j < state[i].length; j++) {
         if (state[i][j] == 1) {
-          var fieldY = y + i;
-          var fieldX = x + j;
+          const fieldY = y + i;
+          const fieldX = x + j;
 
-          if (!this.gameField.inBoundaries(fieldX, fieldY) || this.gameField.occupied(
-              fieldX, fieldY)) {
+          if (!this.gameField.inBoundaries(fieldX, fieldY) || this.gameField.occupied(fieldX, fieldY)) {
             return false;
           }
         }
