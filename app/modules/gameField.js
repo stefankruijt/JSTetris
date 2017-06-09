@@ -3,6 +3,8 @@ import * as constants from './constants';
 export default class GameField {
 
   constructor(canvas) {
+    this.canvas = canvas;
+    this.ctx = canvas.ctx;
     this.gameField = this.initializeEmptyGameField();
     this.block_width = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
   }

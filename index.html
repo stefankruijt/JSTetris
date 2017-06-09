@@ -1,13 +1,44 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html>
 <head>
-  <title>Tetris by Stefan Kruijt</title>
   <meta charset="UTF-8">
   <meta name="author" content="Stefan Kruijt">
+  <title>Tetris by Stefan Kruijt</title>
 </head>
 
 <body>
-  <tetris-game />
-  <script src="dist/bundle.js"></script>
+    <script type="text/javascript">
+
+    window.onload = function() {
+        var game = new Phaser.Game(800, 600, Phaser.AUTO, '', { preload: preload, create: create, update: update });
+
+        function preload () {
+            game.load.image('logo', 'phaser.png');
+        }
+
+        function create () {
+            var logo = game.add.sprite(game.world.centerX, game.world.centerY, 'logo');
+            logo.anchor.setTo(0.5, 0.5);
+
+            // create a new bitmap data object
+    		var bmd = game.add.bitmapData(128,128);
+
+    		// draw to the canvas context like normal
+   			bmd.ctx.beginPath();
+    		bmd.ctx.rect(0,0,128,128);
+    		bmd.ctx.fillStyle = '#ff0000';
+    		bmd.ctx.fill();
+
+    		// use the bitmap data as the texture for the sprite
+    		var sprite = game.add.sprite(200, 200, bmd);
+        }
+
+        function update() {
+
+        }
+    };
+    </script>
+
+  <script src="node_modules/phaser-ce/build/phaser.js"></script>
 </body>
 </html>

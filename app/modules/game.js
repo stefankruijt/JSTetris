@@ -10,17 +10,19 @@ export default class Game {
 
     this.ctx = canvas.getContext("2d");
     this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
+    this.fps = constants.FPS;
     this.numberOfLines = 0;
     this.gameField = new GameField(canvas);
     this.currentBlock = self.getNewRandomTetrisBlock();
 
     document.body.onkeydown = (e) => self.gameEvent(e);
 
-    requestAnimationFrame(mainLoop);
-    var lastFrameTimeMs = 0;
+    self.run();
+/*
 
+    var lastFrameTimeMsDraw = 0;
     function mainLoop(timestamp) {
-      if (timestamp < lastFrameTimeMs + 200) {
+      if (timestamp < lastFrameTimeMsDraw + (1000 / constants.FPS)) {
         draw();
         requestAnimationFrame(mainLoop);
         return;
@@ -28,27 +30,50 @@ export default class Game {
 
       update();
       draw();
-      lastFrameTimeMs = timestamp;
+      lastFrameTimeMsDraw = timestamp;
+      lastFrameTimeMsUpdate = timestamp;
 
       requestAnimationFrame(mainLoop);
+    }*/
+  }
+
+  run() {
+    var loops = 0,
+        currentDate = new Date(), 
+        skipTicks = 1000 / Game.fps, 
+        maxFrameSkip = 10,
+        nextGameTick = currentDate.getTime() + skipTicks,
+        lastGameTick;
+    
+    console.log(currentDate);
+    console.log((new Date).getTime());
+    while ((new Date).getTime() > nextGameTick && loops < maxFrameSkip) {
+      Game.update();
+      nextGameTick += skipTicks;
+      loops++;
+
+      console.log("Loops" + loops)
+    }
+    
+    let canvas = this.gameField;
+    this.draw(canvas);
+  }
+
+  update() {
+    if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 0, 1)) {
+      this.currentBlock.moveDown();
+    } else {
+      this.gameField.addBlockToField(this.currentBlock);
+      this.currentBlock = this.getNewRandomTetrisBlock();
     }
 
-    function update() {
-      if (self.movementAllowed(self.currentBlock, self.currentBlock.activeState, 0, 1)) {
-        self.currentBlock.moveDown();
-      } else {
-        self.gameField.addBlockToField(self.currentBlock);
-        self.currentBlock = self.getNewRandomTetrisBlock();
-      }
+    self.gameField.checkAndRemoveFullLines();
+  }
 
-      self.gameField.checkAndRemoveFullLines();
-    }
-
-    function draw() {
-      self.ctx.clearRect(0, 0, canvas.width, canvas.height);
-      self.gameField.drawGameField(self.ctx);
-      self.currentBlock.drawBlock(self.ctx);
-    }
+  draw(canvas) {
+    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+    this.gameField.drawGameField(this.ctx);
+    this.currentBlock.drawBlock(this.ctx);
   }
 
   getNewRandomTetrisBlock() {
