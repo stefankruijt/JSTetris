@@ -6,57 +6,38 @@ import TetrisBlock from './tetrisBlock';
 export default class Game {
 
   constructor(canvas) {
-    var self = this;
-
+    this.canvas = canvas;
     this.ctx = canvas.getContext("2d");
     this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
-    this.fps = constants.FPS;
+
+
     this.numberOfLines = 0;
     this.gameField = new GameField(canvas);
-    this.currentBlock = self.getNewRandomTetrisBlock();
+    this.currentBlock = this.getNewRandomTetrisBlock();
 
-    document.body.onkeydown = (e) => self.gameEvent(e);
+    document.body.onkeydown = (e) => this.gameEvent(e);
 
-    self.run();
-/*
+    this.skipTicks = 1000 / constants.FPS;
+    this.difficultyTicks = constants.GAME_SPEED;
+    console.log("Construction game: " + this.difficultyTicks)
 
-    var lastFrameTimeMsDraw = 0;
-    function mainLoop(timestamp) {
-      if (timestamp < lastFrameTimeMsDraw + (1000 / constants.FPS)) {
-        draw();
-        requestAnimationFrame(mainLoop);
-        return;
-      }
+    this.lastGameTickDraw = 0;
+    this.lastGameTickUpdate = 0;
 
-      update();
-      draw();
-      lastFrameTimeMsDraw = timestamp;
-      lastFrameTimeMsUpdate = timestamp;
-
-      requestAnimationFrame(mainLoop);
-    }*/
+    setInterval(this.run.bind(this), 1000 / Game.FPS);
   }
 
   run() {
-    var loops = 0,
-        currentDate = new Date(), 
-        skipTicks = 1000 / Game.fps, 
-        maxFrameSkip = 10,
-        nextGameTick = currentDate.getTime() + skipTicks,
-        lastGameTick;
-    
-    console.log(currentDate);
-    console.log((new Date).getTime());
-    while ((new Date).getTime() > nextGameTick && loops < maxFrameSkip) {
-      Game.update();
-      nextGameTick += skipTicks;
-      loops++;
-
-      console.log("Loops" + loops)
+    let currentTime = new Date().getTime();
+    if (currentTime >= this.lastGameTickDraw + this.skipTicks) {
+      this.draw();
+      this.lastGameTickDraw = currentTime;
     }
-    
-    let canvas = this.gameField;
-    this.draw(canvas);
+
+    if (currentTime >= this.lastGameTickUpdate + this.difficultyTicks) {
+      this.update();
+      this.lastGameTickUpdate = currentTime;
+    }
   }
 
   update() {
@@ -67,11 +48,11 @@ export default class Game {
       this.currentBlock = this.getNewRandomTetrisBlock();
     }
 
-    self.gameField.checkAndRemoveFullLines();
+    this.gameField.checkAndRemoveFullLines();
   }
 
-  draw(canvas) {
-    this.ctx.clearRect(0, 0, canvas.width, canvas.height);
+  draw() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
     this.gameField.drawGameField(this.ctx);
     this.currentBlock.drawBlock(this.ctx);
   }

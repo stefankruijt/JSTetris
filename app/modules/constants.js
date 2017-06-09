@@ -1,6 +1,6 @@
 export const DEBUG                  = false;
-export const GAME_SPEED             = 10;
-export const FPS	                = 60;
+export const GAME_SPEED             = 500;
+export const FPS	                  = 60;
 
 export const BLOCK_EDGE_WIDTH       = 1;
 export const FIELD_WIDTH_IN_BLOCKS  = 10;

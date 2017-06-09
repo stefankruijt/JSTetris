@@ -16,9 +16,6 @@
     "url": "https://github.com/stefankruijt/JSTetris/issues"
   },
   "homepage": "https://github.com/stefankruijt/JSTetris#readme",
-  "dependencies": {
-    "phaser-ce": "2.8.0"
-  },
   "devDependencies": {
     "babel-core": "6.24.1",
     "babel-loader": "7.0.0",
