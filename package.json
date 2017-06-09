@@ -22,5 +22,8 @@
     "babel-preset-env": "1.5.1",
     "babel-preset-es2015": "6.24.1",
     "webpack": "2.6.1"
+  },
+  "dependencies": {
+    "audio-player-es6": "^1.0.8"
   }
 }

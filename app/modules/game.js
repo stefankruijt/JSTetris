@@ -7,13 +7,10 @@ export default class Game {
 
   constructor(canvas) {
     this.canvas = canvas;
-    this.ctx = canvas.getContext("2d");
+    this.gameField = new GameField(canvas, this);
     this.blockWidth = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
-
-
     this.numberOfLines = 0;
-    this.gameField = new GameField(canvas);
-    this.currentBlock = this.getNewRandomTetrisBlock();
+    this.currentBlock = this.createRandomBlock();
 
     document.body.onkeydown = (e) => this.gameEvent(e);
 
@@ -45,21 +42,22 @@ export default class Game {
       this.currentBlock.moveDown();
     } else {
       this.gameField.addBlockToField(this.currentBlock);
-      this.currentBlock = this.getNewRandomTetrisBlock();
+      this.currentBlock = this.createRandomBlock();
     }
 
     this.gameField.checkAndRemoveFullLines();
   }
 
   draw() {
-    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-    this.gameField.drawGameField(this.ctx);
-    this.currentBlock.drawBlock(this.ctx);
+    this.gameField.clear();
+    this.gameField.drawGameField();
+    this.gameField.drawBlock(this.currentBlock);
   }
 
-  getNewRandomTetrisBlock() {
+  createRandomBlock() {
     let randomNumber = Math.floor(Math.random() * constants.TETRIS_BLOCK_CHARACTERS.length);
     let blockLetter = constants.TETRIS_BLOCK_CHARACTERS.charAt(randomNumber);
+
     return new TetrisBlock(blockLetter, 3, 0, this.blockWidth);
   }
 
@@ -68,21 +66,25 @@ export default class Game {
       case "ArrowLeft":
         if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, -1, 0)) {
           this.currentBlock.moveLeft();
+          this.draw();
         }
         break;
       case "ArrowRight":
         if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 1, 0)) {
           this.currentBlock.moveRight();
+          this.draw();
         }
         break;
       case "ArrowUp":
-        if (this.movementAllowed(this.currentBlock, this.currentBlock.nextState(), 1, 0)) {
+        if (this.movementAllowed(this.currentBlock, this.currentBlock.nextState(), 0, 0)) {
           this.currentBlock.rotate();
+          this.draw();
         }
         break;
       case "ArrowDown":
         if (this.movementAllowed(this.currentBlock, this.currentBlock.activeState, 0, 1)) {
           this.currentBlock.y = this.currentBlock.y + 1;
+          this.draw();
         }
         break;
     }
@@ -95,8 +97,8 @@ export default class Game {
     for (let i = 0; i < state.length; i++) {
       for (let j = 0; j < state[i].length; j++) {
         if (state[i][j] == 1) {
-          const fieldY = y + i;
-          const fieldX = x + j;
+          let fieldY = y + i;
+          let fieldX = x + j;
 
           if (!this.gameField.inBoundaries(fieldX, fieldY) || this.gameField.occupied(fieldX, fieldY)) {
             return false;
@@ -105,5 +107,10 @@ export default class Game {
       }
     }
     return true;
+  }
+
+  fullLineEvent() {
+    console.log("Full line found");
+
   }
 }
