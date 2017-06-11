@@ -1,18 +1,23 @@
+var path = require("path");
+
 module.exports = {
-  entry: __dirname + '/src/app.js',
+  entry: {
+    app: ["./src/scripts/main.js"]
+  },
   output: {
-    path: __dirname + '/dist',
-    filename: "bundle.js"
+    filename: "bundle.js",
+    path: path.resolve(__dirname, "dist"),
   },
   module: {
     loaders: [
       {
         test: /\.js$/,
-        loader: "babel",
+        exclude: /(node_modules)/,
+        loader: 'babel',
         query: {
           presets: ['es2015']
-        },
-        exclude: /node_modules/ }
-      ]
+        }
+      }
+    ]
   }
 };

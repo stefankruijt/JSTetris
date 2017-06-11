@@ -8,6 +8,7 @@ function startGame() {
 }
 
 let game = document.getElementsByTagName('tetris-game')
+
 if(game.length === 0) {
   console.error("Element <tetris-game> not found.");
 }

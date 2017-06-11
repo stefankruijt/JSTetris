@@ -2,9 +2,16 @@ import * as constants from './constants';
 
 export default class GameField {
 
-  constructor(canvas) {
+  constructor(canvas, game) {
+    this.game = game;
+    this.canvas = canvas;
+    this.ctx = canvas.getContext("2d");
     this.gameField = this.initializeEmptyGameField();
     this.block_width = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
+  }
+
+  clear() {
+    this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
   }
 
   addBlockToField(block) {
@@ -56,28 +63,44 @@ export default class GameField {
     return true;
   }
 
-  drawGameField(ctx) {
+  drawBlock(currentBlock) {
+    let block = currentBlock.blockType.states[currentBlock._activeState];
+    let blockWidth = currentBlock.blockWidth;
+
+    for(let y=0; y<block.length; y++) {
+      for(let x=0; x<block[y].length; x++) {
+        if(block[y][x] == 1) {
+          this.ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
+          this.ctx.fillRect((currentBlock._x+x)*blockWidth,(currentBlock._y+y)*blockWidth,blockWidth,blockWidth);
+          this.ctx.fillStyle =  currentBlock.blockType.Color;
+          this.ctx.fillRect((currentBlock._x+x)*blockWidth+1,(currentBlock._y+y)*blockWidth+1,blockWidth-1*2,blockWidth-1*2);
+        }
+      }
+    }
+  }
+
+  drawGameField() {
     for(let y=0; y<constants.FIELD_HEIGHT_IN_BLOCKS; y++) {
       for(let x=0; x<constants.FIELD_WIDTH_IN_BLOCKS; x++) {
         if (this.gameField[y][x] != " ") {
-          ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
-          ctx.fillRect(x*this.block_width, y*this.block_width, this.block_width, this.block_width);
+          this.ctx.fillStyle = constants.BLOCK_EDGE_COLOR;
+          this.ctx.fillRect(x*this.block_width, y*this.block_width, this.block_width, this.block_width);
 
           if(this.gameField[y][x] == "I")
-            ctx.fillStyle = constants.BLOCKTYPE_I_COLOR;
+            this.ctx.fillStyle = constants.BLOCKTYPE_I_COLOR;
           else if(this.gameField[y][x] == "J")
-            ctx.fillStyle = constants.BLOCKTYPE_J_COLOR;
+            this.ctx.fillStyle = constants.BLOCKTYPE_J_COLOR;
           else if(this.gameField[y][x] == "L")
-            ctx.fillStyle = constants.BLOCKTYPE_L_COLOR;
+            this.ctx.fillStyle = constants.BLOCKTYPE_L_COLOR;
           else if(this.gameField[y][x] == "O")
-            ctx.fillStyle = constants.BLOCKTYPE_O_COLOR;
+            this.ctx.fillStyle = constants.BLOCKTYPE_O_COLOR;
           else if(this.gameField[y][x] == "S")
-            ctx.fillStyle = constants.BLOCKTYPE_S_COLOR;
+            this.ctx.fillStyle = constants.BLOCKTYPE_S_COLOR;
           else if(this.gameField[y][x] == "T")
-            ctx.fillStyle = constants.BLOCKTYPE_T_COLOR;
+            this.ctx.fillStyle = constants.BLOCKTYPE_T_COLOR;
           else if(this.gameField[y][x] == "Z")
-            ctx.fillStyle = constants.BLOCKTYPE_Z_COLOR;
-            ctx.fillRect(x*this.block_width + constants.BLOCK_EDGE_WIDTH, y*this.block_width + constants.BLOCK_EDGE_WIDTH,
+            this.ctx.fillStyle = constants.BLOCKTYPE_Z_COLOR;
+          this.ctx.fillRect(x*this.block_width + constants.BLOCK_EDGE_WIDTH, y*this.block_width + constants.BLOCK_EDGE_WIDTH,
                          this.block_width-constants.BLOCK_EDGE_WIDTH*2, this.block_width-constants.BLOCK_EDGE_WIDTH*2);
         }
       }
@@ -95,7 +118,7 @@ export default class GameField {
       }
 
       if(fullLine) {
-        this.numberOfLines++;
+        this.game.fullLineEvent();
         this.removeLine(i);
       }
     }
