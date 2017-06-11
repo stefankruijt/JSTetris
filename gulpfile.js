@@ -10,12 +10,12 @@ var configuration = {
   paths: {
     src: {
       html: './src/*.html',
-      js:   './src/scripts/*.js'
+      js:   './src/scripts/*.js',
+      sound: './sound/*.mp3'
     },
     dist: './dist'
   }
 };
-
 
 gulp.task('build-js', function() {
   return gulp.src(configuration.paths.src.js)
@@ -30,6 +30,12 @@ gulp.task('build-html', function() {
     .pipe(htmlmin({collapseWhitespace: true}))
     .pipe(gulp.dest(configuration.paths.dist));
 });
+
+gulp.task('copy-sound', function() {
+  return gulp.src(configuration.paths.src.sound)
+    .pipe(gulp.dest(configuration.paths.dist + "/sound"));
+});
+
 
 gulp.task('clean-dest', function() {
   return gulp.src(configuration.paths.dist).pipe(clean());

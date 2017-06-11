@@ -1,5 +1,4 @@
 import * as constants from './constants';
-import Player from 'audio-player-es6';
 
 export default class GameField {
 
@@ -9,10 +8,6 @@ export default class GameField {
     this.ctx = canvas.getContext("2d");
     this.gameField = this.initializeEmptyGameField();
     this.block_width = canvas.width / constants.FIELD_WIDTH_IN_BLOCKS;
-
-    var audio = new Player();
-    audio.src('sounds/'+constants.SOUND_MUSIC_FILE1);
-    audio.play();
   }
 
   clear() {

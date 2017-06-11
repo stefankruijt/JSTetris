@@ -1,5 +1,7 @@
 import * as constants from './constants';
 
+import Player from 'audio-player-es6';
+
 import GameField from './gameField';
 import TetrisBlock from './tetrisBlock';
 
@@ -22,6 +24,10 @@ export default class Game {
     this.lastGameTickUpdate = 0;
 
     setInterval(this.run.bind(this), 1000 / Game.FPS);
+
+    var audio = new Player();
+    audio.src('sound/'+constants.SOUND_MUSIC_FILE1);
+    audio.play();
   }
 
   run() {
