@@ -4,6 +4,7 @@
   "description": "Tetris game madeby Stefan Kruijt",
   "main": " ",
   "scripts": {
+    "run-dev": "gulp default",
     "build-js": "gulp build-js",
     "build-html": "gulp build-html",
     "build": "gulp clean-dest && gulp build-js && gulp build-html && gulp copy-sound"
