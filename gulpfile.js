@@ -1,9 +1,13 @@
 var gulp = require('gulp');
 require('gulp-stats')(gulp);
+
 var rename = require('gulp-rename');
 var clean = require('gulp-clean');
 var uglify = require('gulp-uglify');
 var htmlmin = require('gulp-htmlmin');
+var server = require('gulp-server-livereload');
+
+var runSequence = require('run-sequence');
 var webpack = require('webpack-stream');
 
 var configuration = {
@@ -16,6 +20,10 @@ var configuration = {
     dist: './dist'
   }
 };
+
+gulp.task('default', function(callback) {
+  runSequence('clean-dest', ['build-html', 'build-js', 'copy-sound'], ['serve', 'watch'], callback) 
+});
 
 gulp.task('build-js', function() {
   return gulp.src(configuration.paths.src.js)
@@ -39,4 +47,18 @@ gulp.task('copy-sound', function() {
 
 gulp.task('clean-dest', function() {
   return gulp.src(configuration.paths.dist).pipe(clean());
+});
+
+gulp.task('watch', function() {
+    gulp.watch(configuration.paths.src.js , ['build-js']);
+    gulp.watch(configuration.paths.src.html , ['build-html']);
+    gulp.watch(configuration.paths.src.sound , ['build-sound']);
+});
+
+gulp.task('serve', function() {
+  gulp.src('dist')
+    .pipe(server({
+      livereload: true,
+      open: true
+    }));
 });
