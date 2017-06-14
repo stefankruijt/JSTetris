@@ -14,8 +14,8 @@ var configuration = {
   paths: {
     src: {
       html: './src/*.html',
-      js:   './src/scripts/*.js',
-      sound: './sound/*.mp3'
+      js:   './src/scripts/**/*.js',
+      sound:'./sound/*.mp3'
     },
     dist: './dist'
   }
@@ -52,7 +52,7 @@ gulp.task('clean-dest', function() {
 gulp.task('watch', function() {
     gulp.watch(configuration.paths.src.js , ['build-js']);
     gulp.watch(configuration.paths.src.html , ['build-html']);
-    gulp.watch(configuration.paths.src.sound , ['build-sound']);
+    gulp.watch(configuration.paths.src.sound , ['copy-sound']);
 });
 
 gulp.task('serve', function() {
