@@ -23,11 +23,11 @@ export default class Game {
     this.lastGameTickDraw = 0;
     this.lastGameTickUpdate = 0;
 
-    setInterval(this.run.bind(this), 1000 / Game.FPS);
-
     var audio = new Player();
     audio.src('sound/'+constants.SOUND_MUSIC_FILE1);
     audio.play();
+
+    setInterval(this.run.bind(this), 1000 / Game.FPS);
   }
 
   run() {
@@ -84,6 +84,7 @@ export default class Game {
       case "ArrowUp":
         if (this.movementAllowed(this.currentBlock, this.currentBlock.nextState(), 0, 0)) {
           this.currentBlock.rotate();
+          this.playSound("rotate");
           this.draw();
         }
         break;
@@ -116,7 +117,24 @@ export default class Game {
   }
 
   fullLineEvent() {
-    console.log("Full line found");
+    this.playSound("fullLine");
+  }
 
+  playSound(sound) {
+    let audioPlayer = new Player();
+    console.log("Play sound" + sound);
+    switch(sound) {
+      case "rotate": 
+        audioPlayer.src('sound/'+constants.SOUND_ROTATE_BLOCK);
+        audioPlayer.play();
+        break;
+      case "fullLine":
+        audioPlayer.src('sound/'+constants.SOUND_FULL_LINE);
+        audioPlayer.play();
+        break;
+      default:
+        console.log("Error: Sound not found : " + sound);
+        break;
+    }
   }
 }

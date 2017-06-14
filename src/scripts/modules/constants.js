@@ -18,3 +18,5 @@ export const BLOCKTYPE_S_COLOR      = "#008000"; // green
 export const BLOCKTYPE_T_COLOR      = "#800080"; // purple
 
 export const SOUND_MUSIC_FILE1      = "tetris-gameboy-02.mp3";
+export const SOUND_ROTATE_BLOCK     = "block-rotate.mp3";
+export const SOUND_FULL_LINE     	= "full-line.mp3";
