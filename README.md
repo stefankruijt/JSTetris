@@ -1,5 +1,3 @@
-[![Run on Repl.it](https://repl.it/badge/github/stefankruijt/JSTetris)](https://repl.it/github/stefankruijt/JSTetris)
-
 ### History of project
 The first time I wrote a tetris game was in 2009 (in Java Swing). Around 2013 I came across my old code and realized how bad it was and rewrote to Javascript.
 I was proud of reducing the sourcecode with at least a 1000 lines. Around 2015 I moved that old sourcecode into this Github repository and in 2016 I realized again how much better I got in the years after 2013 and decided it was time to use ES6 for this game.
