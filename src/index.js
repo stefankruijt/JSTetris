@@ -1,4 +1,4 @@
-import Game from './modules/game';
+import Game from './game';
 
 console.log("Start Tetris game");
 
