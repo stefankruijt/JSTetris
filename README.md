@@ -1,6 +1,6 @@
 # JSTetris
 
-JSTetris is a JavaScript Tetris game
+JSTetris is a Tetris clone
 
 ## Installation
 ```bash
