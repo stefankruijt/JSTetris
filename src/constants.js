@@ -1,22 +1,62 @@
-export const DEBUG                  = false;
-export const GAME_SPEED             = 500;
-export const FPS	                  = 60;
+export const DEBUG = false
+export const GAME_SPEED = 500
+export const FPS = 60
 
-export const BLOCK_EDGE_WIDTH       = 1;
-export const FIELD_WIDTH_IN_BLOCKS  = 10;
-export const FIELD_HEIGHT_IN_BLOCKS = 20;
+export const BLOCK_EDGE_WIDTH = 1
+export const FIELD_WIDTH_IN_BLOCKS = 10
+export const FIELD_HEIGHT_IN_BLOCKS = 20
 
 export const TETRIS_BLOCK_CHARACTERS = 'OIZLJST'
 
-export const BLOCK_EDGE_COLOR       = "#000000"; // black
-export const BLOCKTYPE_Z_COLOR      = "#FF0000"; // red
-export const BLOCKTYPE_I_COLOR      = "#00FFFF"; // cyan
-export const BLOCKTYPE_L_COLOR      = "#ffa500"; // orange
-export const BLOCKTYPE_O_COLOR      = "#FFFF00"; // yellow
-export const BLOCKTYPE_J_COLOR      = "#0000FF"; // blue
-export const BLOCKTYPE_S_COLOR      = "#008000"; // green
-export const BLOCKTYPE_T_COLOR      = "#800080"; // purple
+export const BLOCKS = {
+  I: {
+    color: '#00FFFF', // cyan
+    states: [[[0, 0, 0, 0], [1, 1, 1, 1], [0, 0, 0, 0], [0, 0, 0, 0]],
+      [[0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0], [0, 0, 1, 0]]]
+  },
+  Z: {
+    color: '#FF0000', // red
+    states: [[[1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+      [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+      [[0, 0, 0, 0], [1, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+      [[0, 0, 1, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]]]
+  },
+  L: {
+    color: '#ffa500', // orange
+    states: [[[0, 0, 1, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+      [[0, 1, 0, 0], [0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 0, 0]],
+      [[0, 0, 0, 0], [1, 1, 1, 0], [1, 0, 0, 0], [0, 0, 0, 0]],
+      [[1, 1, 0, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]]
+  },
+  O: {
+    color: '#FFFF00', // yellow
+    states: [[[0, 1, 1, 0], [0, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]]]
+  },
+  J: {
+    color: '#0000FF', // blue
+    states: [[[1, 0, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+      [[0, 1, 1, 0], [0, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+      [[0, 0, 0, 0], [1, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+      [[0, 1, 0, 0], [0, 1, 0, 0], [1, 1, 0, 0], [0, 0, 0, 0]]]
+  },
+  S: {
+    color: '#008000', // green
+    states: [[[0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+      [[0, 1, 0, 0], [0, 1, 1, 0], [0, 0, 1, 0], [0, 0, 0, 0]],
+      [[0, 0, 0, 0], [0, 1, 1, 0], [1, 1, 0, 0], [0, 0, 0, 0]],
+      [[1, 0, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]]
+  },
+  T: {
+    color: '#800080', // purple
+    states: [[[0, 1, 0, 0], [1, 1, 1, 0], [0, 0, 0, 0], [0, 0, 0, 0]],
+      [[0, 1, 0, 0], [0, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+      [[0, 0, 0, 0], [1, 1, 1, 0], [0, 1, 0, 0], [0, 0, 0, 0]],
+      [[0, 1, 0, 0], [1, 1, 0, 0], [0, 1, 0, 0], [0, 0, 0, 0]]]
+  }
+}
 
-export const SOUND_MUSIC_FILE1      = "tetris-gameboy-02.mp3";
-export const SOUND_ROTATE_BLOCK     = "block-rotate.mp3";
-export const SOUND_FULL_LINE     	= "full-line.mp3";
+export const BLACK = '#000000' // black
+
+export const SOUND_MUSIC_FILE1 = 'tetris-gameboy-02.mp3'
+export const SOUND_ROTATE_BLOCK = 'block-rotate.mp3'
+export const SOUND_FULL_LINE = 'full-line.mp3'
